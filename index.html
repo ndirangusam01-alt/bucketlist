@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Everlasting Bonds · Sam & Joy — Timeless Love in Motion</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,500;0,700;1,500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: radial-gradient(circle at 10% 20%, rgba(255, 245, 235, 1) 0%, rgba(255, 225, 210, 1) 100%);
+            color: #2e241f;
+            transition: background 0.4s ease, color 0.3s ease;
+            min-height: 100vh;
+            padding: 2rem 1.8rem;
+            position: relative;
+        }
+
+        /* animated heart particles effect */
+        body::before {
+            content: "❤️";
+            font-size: 18px;
+            position: fixed;
+            bottom: 10px;
+            left: 0;
+            right: 0;
+            pointer-events: none;
+            opacity: 0.05;
+            z-index: 0;
+            animation: floatingHearts 90s infinite linear;
+            white-space: nowrap;
+            letter-spacing: 40px;
+        }
+
+        @keyframes floatingHearts {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0.04; }
+            100% { transform: translateY(-800px) rotate(15deg); opacity: 0.12; }
+        }
+
+        :root {
+            --bg-soft: #fff8f4;
+            --card-glass: rgba(255, 250, 245, 0.92);
+            --text-deep: #3b2a1f;
+            --text-warm: #b95f3c;
+            --rose-gold: linear-gradient(135deg, #e7b89c, #d98b5b);
+            --sam-emerald: #2d6a4f;
+            --joy-coral: #e76f51;
+            --shared-amber: #d4a373;
+            --shadow-love: 0 30px 45px -20px rgba(80, 40, 20, 0.25), 0 8px 20px rgba(0, 0, 0, 0.05);
+            --border-glow: 1px solid rgba(217, 137, 95, 0.4);
+            --soft-blur: blur(12px);
+        }
+
+        body.dark {
+            background: radial-gradient(circle at 70% 15%, #1f1b24, #0f0c14);
+            --bg-soft: #2a2533;
+            --card-glass: rgba(35, 30, 45, 0.93);
+            --text-deep: #f2e8e0;
+            --text-warm: #f4ac88;
+            --border-glow: 1px solid rgba(217, 137, 95, 0.4);
+        }
+
+        .app-container {
+            max-width: 1440px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 3;
+        }
+
+        /* auth overlay romantic */
+        .auth-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at 30% 40%, #1e1712ee, #020202dd);
+            backdrop-filter: blur(18px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .auth-card {
+            background: var(--card-glass);
+            backdrop-filter: blur(20px);
+            border-radius: 3.5rem;
+            padding: 2.8rem 2rem;
+            max-width: 440px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 40px 70px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 200, 160, 0.3);
+            border: 1px solid rgba(255, 180, 130, 0.5);
+            transition: transform 0.3s;
+        }
+
+        .auth-card i {
+            font-size: 3.5rem;
+            color: #e07a5f;
+            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+            animation: gentleBeat 2s infinite;
+        }
+
+        @keyframes gentleBeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.07); }
+        }
+
+        .auth-input {
+            width: 100%;
+            padding: 14px 20px;
+            margin: 1rem 0;
+            border-radius: 60px;
+            border: 1px solid var(--border-glow);
+            background: rgba(255, 248, 240, 0.9);
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            transition: 0.2s;
+        }
+
+        .btn-auth {
+            background: linear-gradient(105deg, #e98a64, #c96f48);
+            border: none;
+            padding: 12px 35px;
+            border-radius: 60px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            color: white;
+            cursor: pointer;
+            box-shadow: 0 8px 18px rgba(201, 111, 72, 0.4);
+            transition: 0.2s;
+        }
+
+        .hero {
+            text-align: center;
+            margin-bottom: 2.2rem;
+            position: relative;
+        }
+
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 800;
+            font-size: 2.4rem;
+            background: linear-gradient(125deg, #2d6a4f, #e76f51, #d4a373);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: -0.3px;
+        }
+
+        .hero .sub {
+            background: rgba(255, 220, 190, 0.3);
+            backdrop-filter: blur(4px);
+            display: inline-block;
+            padding: 0.4rem 1.6rem;
+            border-radius: 60px;
+            font-weight: 500;
+            margin-top: 12px;
+            font-size: 0.9rem;
+        }
+
+        /* tab buttons elevated */
+        .view-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin: 2rem 0 1.8rem;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            background: rgba(255, 245, 235, 0.7);
+            backdrop-filter: blur(8px);
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: 100px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            color: #734b2e;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .tab-btn.active {
+            background: var(--sam-emerald);
+            color: white;
+            box-shadow: 0 12px 20px -8px rgba(45, 106, 79, 0.4);
+            transform: scale(1.02);
+        }
+
+        .tab-btn.joy-active {
+            background: var(--joy-coral);
+            color: white;
+            box-shadow: 0 12px 20px -8px rgba(231, 111, 81, 0.4);
+        }
+
+        .tab-btn.shared-active {
+            background: var(--shared-amber);
+            color: white;
+            box-shadow: 0 12px 20px -8px rgba(212, 163, 115, 0.4);
+        }
+
+        /* stats panel glassmorphic */
+        .summary-stats {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            background: var(--card-glass);
+            backdrop-filter: blur(10px);
+            border-radius: 100px;
+            padding: 0.8rem 1.8rem;
+            border: 1px solid rgba(217, 137, 95, 0.25);
+            box-shadow: var(--shadow-love);
+        }
+
+        .stat-card {
+            text-align: center;
+            font-weight: 600;
+            padding: 5px 16px;
+            border-radius: 40px;
+            background: rgba(255, 220, 190, 0.3);
+            transition: 0.2s;
+        }
+
+        .toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 14px;
+            background: var(--card-glass);
+            backdrop-filter: blur(12px);
+            padding: 0.8rem 1.8rem;
+            border-radius: 100px;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(217, 137, 95, 0.3);
+        }
+
+        .search-filter input, .search-filter select {
+            padding: 10px 18px;
+            border-radius: 50px;
+            border: 1px solid #ffcfb5;
+            background: rgba(255, 245, 235, 0.7);
+            font-weight: 500;
+        }
+
+        .icon-btn {
+            background: rgba(200, 150, 120, 0.15);
+            border: none;
+            font-size: 0.9rem;
+            cursor: pointer;
+            padding: 8px 18px;
+            border-radius: 40px;
+            color: var(--text-warm);
+            font-weight: 500;
+            transition: 0.2s;
+        }
+
+        .icon-btn:hover {
+            background: rgba(217, 137, 95, 0.3);
+            transform: translateY(-2px);
+        }
+
+        /* cards nice love style */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+            gap: 2rem;
+        }
+
+        .bucket-item {
+            background: var(--card-glass);
+            backdrop-filter: blur(12px);
+            border-radius: 2rem;
+            padding: 1.6rem;
+            border: 1px solid var(--border-glow);
+            transition: all 0.25s ease;
+            box-shadow: var(--shadow-love);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .bucket-item:hover {
+            transform: translateY(-6px);
+            border-color: rgba(217, 137, 95, 0.7);
+            box-shadow: 0 35px 45px -18px rgba(0, 0, 0, 0.3);
+        }
+
+        .bucket-item.completed {
+            border-left: 6px solid var(--sam-emerald);
+            background: rgba(45, 106, 79, 0.05);
+            backdrop-filter: blur(8px);
+        }
+
+        .item-title {
+            font-size: 1.35rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            background: #f3e1d4;
+            padding: 4px 14px;
+            border-radius: 60px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+            color: #7a4a2c;
+        }
+
+        .media-preview {
+            background: rgba(217, 137, 95, 0.18);
+            border-radius: 60px;
+            padding: 5px 14px;
+            font-size: 0.75rem;
+        }
+
+        /* ========== VOICE MODAL – DREAMY & ATTRACTIVE ========== */
+    .voice-modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.75);
+        backdrop-filter: blur(20px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 2000;
+        animation: fadeInModal 0.25s ease-out;
+        font-family: 'Inter', sans-serif;
+    }
+
+    @keyframes fadeInModal {
+        from { opacity: 0; backdrop-filter: blur(0px); }
+        to { opacity: 1; backdrop-filter: blur(20px); }
+    }
+
+    .voice-modal-content {
+        background: linear-gradient(145deg, rgba(255, 245, 240, 0.98), rgba(255, 235, 225, 0.98));
+        backdrop-filter: blur(12px);
+        border-radius: 2.5rem;
+        padding: 2rem 1.8rem;
+        max-width: 420px;
+        width: 90%;
+        text-align: center;
+        box-shadow: 0 35px 65px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(231, 111, 81, 0.4);
+        transition: transform 0.2s ease;
+        border: 1px solid rgba(217, 137, 95, 0.6);
+    }
+
+    body.dark .voice-modal-content {
+        background: linear-gradient(145deg, #2a2535, #1f1b2a);
+        border: 1px solid rgba(231, 111, 81, 0.5);
+    }
+
+    .voice-modal-content i.fa-microphone-alt {
+        font-size: 3rem;
+        color: #e76f51;
+        filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.15));
+        margin-bottom: 0.5rem;
+        animation: micPulse 1.8s infinite ease;
+    }
+
+    @keyframes micPulse {
+        0%, 100% { transform: scale(1); opacity: 0.9; }
+        50% { transform: scale(1.08); opacity: 1; text-shadow: 0 0 5px #e76f51; }
+    }
+
+    .voice-modal-content h3 {
+        font-family: 'Playfair Display', serif;
+        font-size: 1.7rem;
+        font-weight: 700;
+        background: linear-gradient(135deg, #c96f48, #e2855f);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        margin: 0.3rem 0 0.8rem;
+        letter-spacing: -0.2px;
+    }
+
+    .voice-timer {
+        font-size: 3.2rem;
+        font-weight: 800;
+        font-family: 'Monaco', 'Courier New', monospace;
+        background: linear-gradient(125deg, #2d6a4f, #e76f51);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        margin: 0.8rem 0;
+        letter-spacing: 4px;
+        text-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    }
+
+    /* animated wave visual */
+    .voice-wave {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 7px;
+        height: 70px;
+        margin: 0.8rem 0 1rem;
+    }
+
+    .voice-wave span {
+        width: 6px;
+        height: 22px;
+        background: #d98b5b;
+        border-radius: 20px;
+        transition: 0.08s linear;
+    }
+
+    .recording-active .voice-wave span {
+        animation: waveRomance 0.55s infinite ease alternate;
+    }
+
+    @keyframes waveRomance {
+        0% { height: 18px; background: #e7b89c; }
+        100% { height: 52px; background: #e76f51; }
+    }
+
+    .voice-wave span:nth-child(1) { animation-delay: 0s; }
+    .voice-wave span:nth-child(2) { animation-delay: 0.1s; }
+    .voice-wave span:nth-child(3) { animation-delay: 0.2s; }
+    .voice-wave span:nth-child(4) { animation-delay: 0.3s; }
+    .voice-wave span:nth-child(5) { animation-delay: 0.4s; }
+    .voice-wave span:nth-child(6) { animation-delay: 0.5s; }
+
+    .voice-buttons {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        margin: 1.7rem 0 0.6rem;
+        flex-wrap: wrap;
+    }
+
+    .voice-btn-record, .voice-btn-stop, .voice-btn-cancel {
+        padding: 10px 24px;
+        border-radius: 60px;
+        font-weight: 700;
+        font-size: 0.9rem;
+        border: none;
+        cursor: pointer;
+        transition: 0.15s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-family: 'Inter', sans-serif;
+    }
+
+    .voice-btn-record {
+        background: linear-gradient(110deg, #e76f51, #d65c38);
+        color: white;
+        box-shadow: 0 6px 14px rgba(215, 85, 50, 0.35);
+    }
+
+    .voice-btn-record:disabled {
+        opacity: 0.5;
+        transform: none;
+        cursor: not-allowed;
+        filter: grayscale(0.1);
+    }
+
+    .voice-btn-stop {
+        background: #4a4a5e;
+        color: white;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .voice-btn-stop:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+
+    .voice-btn-cancel {
+        background: transparent;
+        border: 1px solid rgba(129, 83, 60, 0.4);
+        color: #7a5a48;
+        backdrop-filter: blur(4px);
+    }
+
+    body.dark .voice-btn-cancel {
+        color: #e2c7b5;
+        border-color: rgba(231, 111, 81, 0.5);
+    }
+
+    .voice-btn-record:hover:not(:disabled),
+    .voice-btn-stop:hover:not(:disabled),
+    .voice-btn-cancel:hover {
+        transform: translateY(-2px);
+        filter: brightness(1.02);
+    }
+
+    .voice-btn-record:active, .voice-btn-stop:active {
+        transform: translateY(1px);
+    }
+
+    /* small helper text */
+    .voice-note-hint {
+        font-size: 0.7rem;
+        margin-top: 0.8rem;
+        opacity: 0.7;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+    }
+</style>
+</head>
+<body>
+<div id="authScreen" class="auth-overlay">
+    <div class="auth-card">
+        <i class="fas fa-heart"></i>
+        <h2 style="font-family: 'Playfair Display'; margin: 10px 0;">Everlasting Bonds</h2>
+        <p style="font-size: 1rem;">Sam & Joy · Our infinite story</p>
+        <input type="text" id="authName" placeholder="Your name (Sam or Joy)" class="auth-input">
+        <input type="password" id="authPass" placeholder="password" class="auth-input">
+        <button class="btn-auth" id="authBtn">Unlock our world ❤️</button>
+        <div id="authError" style="color:#e07a5f; margin-top:12px;"></div>
+    </div>
+</div>
+
+<div id="mainApp" style="display: none;">
+<div class="app-container">
+    <div class="hero">
+        <h1><i class="fas fa-infinity"></i> Sam & Joy · Everlasting</h1>
+        <div class="sub"><i class="fas fa-feather-alt"></i> Our shared dreams · forever in bloom</div>
+        <div style="margin-top: 16px; display: flex; justify-content: center; gap: 12px;">
+            <button id="themeToggleBtn" class="icon-btn"><i class="fas fa-moon"></i> <span>Dark Mode</span></button>
+            <button id="viewToggleBtn" class="icon-btn"><i class="fas fa-th-large"></i> Grid/List</button>
+        </div>
+    </div>
+
+    <div class="view-tabs">
+        <button class="tab-btn" data-view="sam">🌿 Sam's World</button>
+        <button class="tab-btn" data-view="joy">🌸 Joy's World</button>
+        <button class="tab-btn" data-view="shared">💞 Shared Eternity</button>
+    </div>
+
+    <div class="summary-stats" id="statsPanel"></div>
+
+    <div class="toolbar">
+        <div class="search-filter" style="display: flex; gap: 10px; flex-wrap: wrap;">
+            <input type="text" id="searchInput" placeholder="🔍 search dreams...">
+            <select id="filterStatus"><option value="all">All vibes</option><option value="pending">Adventures ahead</option><option value="completed">Completed magic</option></select>
+            <select id="filterCategory"><option value="all">All categories</option><option value="adventure">🌄 Adventure</option><option value="romance">💖 Romance</option><option value="growth">🌱 Growth</option></select>
+            <button id="exportBackupBtn" class="icon-btn"><i class="fas fa-download"></i> Save</button>
+            <button id="importBackupBtn" class="icon-btn"><i class="fas fa-upload"></i> Load</button>
+        </div>
+        <div>
+            <button id="randomDreamBtn" class="icon-btn"><i class="fas fa-dice-d6"></i> Dream of the moment</button>
+            <button id="quoteBtn" class="icon-btn"><i class="fas fa-quote-right"></i> Whisper</button>
+        </div>
+    </div>
+
+    <div id="addFormContainer" style="background: var(--card-glass); backdrop-filter: blur(10px); border-radius: 2rem; padding: 1.8rem; margin-bottom: 2rem; border: 1px solid rgba(217, 137, 95, 0.3);"></div>
+    <div id="itemsContainer" class="cards-grid"></div>
+    <div id="inspireQuote" style="margin-top: 1.5rem; text-align: center; font-style: italic; font-size: 1rem; padding: 0.8rem;"></div>
+    <footer><i class="fas fa-shield-alt"></i> Encrypted with love · our forever list</footer>
+</div>
+</div>
+
+<script>
+    const CRED = { Sam: "sam01112024", Joy: "joy01112024" };
+    let currentUser = null;
+    let currentView = "sam";
+    let samItems = [], joyItems = [], sharedItems = [];
+    const STORAGE = { sam: "Everlasting_Sam", joy: "Everlasting_Joy", shared: "Everlasting_Shared" };
+
+    function loadAll() {
+        samItems = JSON.parse(localStorage.getItem(STORAGE.sam) || "[]");
+        joyItems = JSON.parse(localStorage.getItem(STORAGE.joy) || "[]");
+        sharedItems = JSON.parse(localStorage.getItem(STORAGE.shared) || "[]");
+        [samItems, joyItems, sharedItems].forEach(arr => arr.forEach(item => {
+            item.completed = item.completed || false;
+            item.completedAt = item.completedAt || null;
+            item.category = item.category || "adventure";
+            item.audioUrl = item.audioUrl || null;
+            item.imageDataUrl = item.imageDataUrl || null;
+            item.createdAt = item.createdAt || new Date().toISOString();
+        }));
+    }
+    function saveSam() { localStorage.setItem(STORAGE.sam, JSON.stringify(samItems)); }
+    function saveJoy() { localStorage.setItem(STORAGE.joy, JSON.stringify(joyItems)); }
+    function saveShared() { localStorage.setItem(STORAGE.shared, JSON.stringify(sharedItems)); }
+
+    function addItemToList(listType, title, desc, category, imageDataUrl = null, audioDataUrl = null) {
+        if(!title.trim()) { alert("✨ Every dream deserves a poetic title ✨"); return false; }
+        const newItem = {
+            id: Date.now() + "-" + Math.random().toString(36).substr(2, 8),
+            title: title.trim(),
+            description: desc || "",
+            category: category || "adventure",
+            imageDataUrl: imageDataUrl || null,
+            audioUrl: audioDataUrl || null,
+            completed: false,
+            completedAt: null,
+            createdAt: new Date().toISOString(),
+        };
+        if(listType === 'sam' && currentUser === 'Sam') { samItems.unshift(newItem); saveSam(); renderApp(); return true; }
+        if(listType === 'joy' && currentUser === 'Joy') { joyItems.unshift(newItem); saveJoy(); renderApp(); return true; }
+        if(listType === 'shared') { sharedItems.unshift(newItem); saveShared(); renderApp(); return true; }
+        alert("Only the keeper of this heart can add here.");
+        return false;
+    }
+
+    function toggleComplete(list, id) {
+        let arr = list === 'sam' ? samItems : (list === 'joy' ? joyItems : sharedItems);
+        let item = arr.find(i => i.id == id);
+        if(item) { item.completed = !item.completed; item.completedAt = item.completed ? new Date().toISOString() : null; if(item.completed) showCelebration(); if(list === 'sam') saveSam(); else if(list === 'joy') saveJoy(); else saveShared(); renderApp(); }
+    }
+    function deleteItem(list, id) { if(confirm("Delete this memory forever? 💔")) { if(list === 'sam') { samItems = samItems.filter(i => i.id != id); saveSam(); } else if(list === 'joy') { joyItems = joyItems.filter(i => i.id != id); saveJoy(); } else { sharedItems = sharedItems.filter(i => i.id != id); saveShared(); } renderApp(); } }
+    function editItem(list, id) {
+        let arr = list === 'sam' ? samItems : (list === 'joy' ? joyItems : sharedItems);
+        let item = arr.find(i => i.id == id);
+        if(item) { let newTitle = prompt("Revise your dream title", item.title); if(newTitle && newTitle.trim()) item.title = newTitle.trim(); let newDesc = prompt("Rewrite the memory", item.description || ""); if(newDesc !== null) item.description = newDesc; let newCat = prompt("Category (adventure/romance/growth)", item.category); if(newCat && ["adventure","romance","growth"].includes(newCat.toLowerCase())) item.category = newCat.toLowerCase(); if(list === 'sam') saveSam(); else if(list === 'joy') saveJoy(); else saveShared(); renderApp(); }
+    }
+
+    function showCelebration() { 
+        let cont = document.getElementById("itemsContainer");
+        if(cont) cont.style.animation = "none"; setTimeout(() => { if(cont) cont.style.animation = "gentlePop 0.4s ease"; }, 10);
+    }
+
+    function openVoiceRecorder(callback) {
+        // Create modal with romantic, polished structure
+        const modal = document.createElement('div');
+        modal.className = 'voice-modal';
+        modal.id = 'lovelyVoiceModal';
+        modal.innerHTML = `
+            <div class="voice-modal-content">
+                <i class="fas fa-microphone-alt"></i>
+                <h3>❤️ voice whisper ❤️</h3>
+                <div class="voice-timer" id="voiceTimerDisplay">00:00</div>
+                <div class="voice-wave" id="voiceWave">
+                    <span></span><span></span><span></span><span></span><span></span><span></span>
+                </div>
+                <div class="voice-buttons">
+                    <button id="voiceStartBtn" class="voice-btn-record"><i class="fas fa-circle"></i> Start Recording</button>
+                    <button id="voiceStopBtn" class="voice-btn-stop" disabled><i class="fas fa-stop"></i> Stop & Save</button>
+                    <button id="voiceCancelBtn" class="voice-btn-cancel"><i class="fas fa-times"></i> Cancel</button>
+                </div>
+                <div class="voice-note-hint">
+                    <i class="fas fa-heart" style="font-size: 0.65rem;"></i> 
+                    <span>Speak your heart — we'll attach the memory</span>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(modal);
+
+
+        const timerDisplay = document.getElementById('voiceTimerDisplay');
+        const startBtn = document.getElementById('voiceStartBtn');
+        const stopBtn = document.getElementById('voiceStopBtn');
+        const cancelBtn = document.getElementById('voiceCancelBtn');
+        const waveContainer = document.querySelector('.voice-wave');
+
+        let seconds = 0;
+        let timerInterval = null;
+        let mediaStream = null;
+        let mediaRecorder = null;
+        let audioChunks = [];
+
+        function updateTimerDisplay() {
+            const mins = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            timerDisplay.textContent = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+        }
+
+        function resetWaveVisual(active) {
+            if (!waveContainer) return;
+            if (active) {
+                waveContainer.parentElement?.classList.add('recording-active');
+            } else {
+                waveContainer.parentElement?.classList.remove('recording-active');
+            }
+        }
+
+        function startRecording() {
+            navigator.mediaDevices.getUserMedia({ audio: true })
+                .then(stream => {
+                    mediaStream = stream;
+                    mediaRecorder = new MediaRecorder(stream, { mimeType: 'audio/webm' });
+                    audioChunks = [];
+
+                    mediaRecorder.ondataavailable = (event) => {
+                        if (event.data.size > 0) {
+                            audioChunks.push(event.data);
+                        }
+                    };
+
+                    mediaRecorder.onstop = () => {
+                        if (timerInterval) clearInterval(timerInterval);
+                        resetWaveVisual(false);
+                        const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+                        const reader = new FileReader();
+                        reader.onload = function () {
+                            const base64Audio = reader.result;
+                            // clean up modal and return audio
+                            if (modal && modal.parentNode) modal.remove();
+                            if (callback) callback(base64Audio);
+                        };
+                        reader.readAsDataURL(audioBlob);
+                        if (mediaStream) {
+                            mediaStream.getTracks().forEach(track => track.stop());
+                        }
+                    };
+
+                    mediaRecorder.start(100);
+                    seconds = 0;
+                    updateTimerDisplay();
+                    resetWaveVisual(true);
+                    timerInterval = setInterval(() => {
+                        seconds++;
+                        updateTimerDisplay();
+                    }, 1000);
+
+                    startBtn.disabled = true;
+                    stopBtn.disabled = false;
+                })
+                .catch(err => {
+                    console.warn(err);
+                    alert("🎙️ Microphone access is needed to record voice notes. Please allow permissions and try again.");
+                    if (modal && modal.parentNode) modal.remove();
+                });
+        }
+
+        function stopAndSave() {
+            if (mediaRecorder && mediaRecorder.state === "recording") {
+                mediaRecorder.stop();
+                // buttons disabled right away to avoid double calls
+                stopBtn.disabled = true;
+                startBtn.disabled = true;
+            } else {
+                // if no recording active, just close
+                closeModal();
+            }
+        }
+
+        function closeModal() {
+            if (timerInterval) clearInterval(timerInterval);
+            if (mediaRecorder && mediaRecorder.state === "recording") {
+                try { mediaRecorder.stop(); } catch (e) { }
+            }
+            if (mediaStream) {
+                mediaStream.getTracks().forEach(track => track.stop());
+            }
+            if (modal && modal.parentNode) modal.remove();
+        }
+
+        // event binding
+        startBtn.onclick = startRecording;
+        stopBtn.onclick = stopAndSave;
+        cancelBtn.onclick = closeModal;
+
+        // optional: prevent background scroll
+        modal.addEventListener('touchmove', (e) => e.preventDefault(), { passive: false });
+    }
+
+    function renderAddForm() {
+        const container = document.getElementById("addFormContainer");
+        let allowed=false;
+        if(currentView === 'sam' && currentUser === 'Sam') allowed=true;
+        else if(currentView === 'joy' && currentUser === 'Joy') allowed=true;
+        else if(currentView === 'shared') allowed=true;
+        if(!allowed) { container.innerHTML = `<div style="text-align:center; padding:1rem;">🔐 Only ${currentView === 'sam' ? 'Sam' : (currentView === 'joy' ? 'Joy' : 'both hearts')} can add.</div>`; return; }
+        let pendingImage=null, pendingAudio=null;
+        container.innerHTML = `<div style="display:flex; flex-direction:column; gap:14px;"><div style="display:flex; flex-wrap:wrap; gap:12px;"><input type="text" id="newTitle" placeholder="✨ dream title..." style="flex:2; padding:12px 20px; border-radius:60px; border:1px solid var(--border-glow); background:inherit;"><input type="text" id="newDesc" placeholder="add a memory note..." style="flex:3; padding:12px 20px; border-radius:60px;"><select id="newCat" style="padding:10px; border-radius:60px;"><option value="adventure">🌄 Adventure</option><option value="romance">💖 Romance</option><option value="growth">🌱 Growth</option></select></div><div style="display:flex; gap:12px; flex-wrap:wrap;"><label class="icon-btn" for="imageUpload" style="cursor:pointer;"><i class="fas fa-camera"></i> 📸 attach image</label><input type="file" id="imageUpload" accept="image/*" style="display:none"><button id="voiceRecorderBtn" class="icon-btn"><i class="fas fa-microphone"></i> 🎙️ voice note</button><button id="addBtnMain" class="btn-primary"><i class="fas fa-heart"></i> plant this dream</button></div><div id="mediaPreview" style="display:flex; gap:12px; flex-wrap:wrap;"></div></div>`;
+        const previewDiv = document.getElementById("mediaPreview");
+        function updatePreview() { previewDiv.innerHTML = ''; if(pendingImage) previewDiv.innerHTML += `<div class="media-preview"><i class="fas fa-image"></i> photo selected <button id="clearImageBtn" style="background:none; border:none; color:#e07a5f; cursor:pointer;">✖</button></div>`; if(pendingAudio) previewDiv.innerHTML += `<div class="media-preview"><i class="fas fa-headphones"></i> voice recorded <button id="clearAudioBtn" style="background:none; border:none; color:#e07a5f; cursor:pointer;">✖</button></div>`; const clearImg=document.getElementById("clearImageBtn"); const clearAud=document.getElementById("clearAudioBtn"); if(clearImg) clearImg.onclick=()=>{ pendingImage=null; updatePreview(); }; if(clearAud) clearAud.onclick=()=>{ pendingAudio=null; updatePreview(); }; }
+        document.getElementById("imageUpload")?.addEventListener("change", (e) => { const file=e.target.files[0]; if(file){ const reader=new FileReader(); reader.onload=ev=>{ pendingImage=ev.target.result; updatePreview(); }; reader.readAsDataURL(file); } });
+        document.getElementById("voiceRecorderBtn")?.addEventListener("click", ()=> { openVoiceRecorder((audioBase64)=>{ pendingAudio=audioBase64; updatePreview(); alert("Voice captured — will be part of this dream"); }); });
+        document.getElementById("addBtnMain")?.addEventListener("click", ()=>{ const title=document.getElementById("newTitle").value; const desc=document.getElementById("newDesc").value; const cat=document.getElementById("newCat").value; if(addItemToList(currentView, title, desc, cat, pendingImage, pendingAudio)){ document.getElementById("newTitle").value=""; document.getElementById("newDesc").value=""; pendingImage=null; pendingAudio=null; updatePreview(); const fileInput=document.getElementById("imageUpload"); if(fileInput) fileInput.value=""; } });
+    }
+    function getCurrentArray(){ if(currentView === 'sam') return samItems; if(currentView === 'joy') return joyItems; return sharedItems; }
+    function escapeHtml(str){ if(!str) return ""; return str.replace(/[&<>]/g,function(m){if(m==='&') return '&amp;'; if(m==='<') return '&lt;'; if(m==='>') return '&gt;'; return m;}); }
+    function renderItems() {
+        let arr = getCurrentArray(); let search = document.getElementById("searchInput")?.value.toLowerCase() || ""; let status = document.getElementById("filterStatus")?.value || "all"; let category = document.getElementById("filterCategory")?.value || "all";
+        let filtered = arr.filter(item => { if(search && !item.title.toLowerCase().includes(search) && !(item.description?.toLowerCase().includes(search))) return false; if(status === "completed" && !item.completed) return false; if(status === "pending" && item.completed) return false; if(category !== "all" && item.category !== category) return false; return true; });
+        const container = document.getElementById("itemsContainer"); const isGridView = !document.body.classList.contains("list-mode"); container.className = isGridView ? "cards-grid" : "cards-grid list-view";
+        if(filtered.length===0){ container.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:3rem;">💫 Add your first magical entry 💫</div>`; return; }
+        container.innerHTML = filtered.map(item => ` <div class="bucket-item ${item.completed ? 'completed' : ''}"><div class="item-title">${item.completed ? '<i class="fas fa-check-circle" style="color:#2d6a4f;"></i>' : '<i class="far fa-heart" style="color:#e76f51;"></i>'} <span class="${item.completed ? 'strike' : ''}">${escapeHtml(item.title)}</span><span class="tag">${item.category === 'adventure' ? '🌄' : item.category === 'romance' ? '💖' : '🌱'} ${item.category}</span></div>${item.description ? `<div style="margin:10px 0; font-size:0.85rem;">${escapeHtml(item.description).replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank" style="color:#e07a5f;">$1</a>')}</div>` : ''}${item.imageDataUrl ? `<img src="${item.imageDataUrl}" style="max-width:100%; max-height:170px; border-radius:20px; margin:10px 0; object-fit:cover; border:1px solid rgba(0,0,0,0.1);" />` : ''}${item.audioUrl ? `<audio controls src="${item.audioUrl}" style="width:100%; margin:8px 0; border-radius:40px;"></audio>` : ''}<div style="display:flex; justify-content:space-between; margin-top:12px; font-size:0.7rem;"><span><i class="far fa-calendar-alt"></i> ${new Date(item.createdAt).toLocaleDateString()}</span>${item.completedAt ? `<span>⭐ completed ${new Date(item.completedAt).toLocaleDateString()}</span>` : ''}</div><div style="display:flex; gap:10px; margin-top:14px;"><button class="icon-btn complete-btn" data-id="${item.id}" data-list="${currentView}"><i class="fas ${item.completed ? 'fa-undo-alt' : 'fa-check-double'}"></i> ${item.completed ? 'undo' : 'done'}</button><button class="icon-btn edit-btn" data-id="${item.id}" data-list="${currentView}"><i class="fas fa-edit"></i> edit</button><button class="icon-btn delete-btn" data-id="${item.id}" data-list="${currentView}"><i class="fas fa-trash"></i> delete</button></div></div>`).join('');
+        document.querySelectorAll('.complete-btn').forEach(btn=>btn.addEventListener('click',(e)=>{ toggleComplete(btn.dataset.list, btn.dataset.id); }));
+        document.querySelectorAll('.edit-btn').forEach(btn=>btn.addEventListener('click',(e)=>{ editItem(btn.dataset.list, btn.dataset.id); }));
+        document.querySelectorAll('.delete-btn').forEach(btn=>btn.addEventListener('click',(e)=>{ deleteItem(btn.dataset.list, btn.dataset.id); }));
+    }
+    function updateStats() { const totalSam = samItems.length, completedSam = samItems.filter(i=>i.completed).length; const totalJoy = joyItems.length, completedJoy = joyItems.filter(i=>i.completed).length; const totalShared = sharedItems.length, completedShared = sharedItems.filter(i=>i.completed).length; document.getElementById("statsPanel").innerHTML = `<div class="stat-card"><i class="fas fa-leaf"></i> Sam ${completedSam}/${totalSam} (${totalSam?Math.round(completedSam/totalSam*100):0}%)</div><div class="stat-card"><i class="fas fa-feather-alt"></i> Joy ${completedJoy}/${totalJoy} (${totalJoy?Math.round(completedJoy/totalJoy*100):0}%)</div><div class="stat-card"><i class="fas fa-heart"></i> Shared ${completedShared}/${totalShared} (${totalShared?Math.round(completedShared/totalShared*100):0}%)</div><div class="stat-card"><i class="fas fa-infinity"></i> total ${totalSam+totalJoy+totalShared}</div>`; }
+    function randomDreamPicker() { let all = [...samItems, ...joyItems, ...sharedItems]; if(all.length===0) return alert("Add a dream first"); let rand = all[Math.floor(Math.random()*all.length)]; alert(`✨ Dream of the moment ✨\n"${rand.title}"\n${rand.description || "Let's make it real together."}`); }
+    const quotes = ["Where you are is home.", "Every love story is beautiful, but ours is my favorite.", "Let’s wander where the Wi-Fi is weak.", "You are my greatest adventure.", "Together is a wonderful place to be.", "Peace is being with you.", "You make my soul smile."];
+    function randomQuote() { document.getElementById("inspireQuote").innerHTML = `<i class="fas fa-feather-alt"></i> ${quotes[Math.floor(Math.random()*quotes.length)]}`; }
+    function exportBackup() { const data = { samItems, joyItems, sharedItems }; const blob = new Blob([JSON.stringify(data)], {type:"application/json"}); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = "everlasting_bonds_backup.json"; a.click(); }
+    function importBackup(file) { const reader = new FileReader(); reader.onload = (e) => { try { const json = JSON.parse(e.target.result); if(json.samItems) samItems = json.samItems; if(json.joyItems) joyItems = json.joyItems; if(json.sharedItems) sharedItems = json.sharedItems; saveSam(); saveJoy(); saveShared(); renderApp(); alert("Backup restored with love."); } catch(err){ alert("Invalid file"); } }; reader.readAsText(file); }
+    function renderApp() { updateStats(); renderAddForm(); renderItems(); randomQuote(); document.querySelectorAll('.tab-btn').forEach(btn => { btn.classList.remove('active','joy-active','shared-active'); if(btn.dataset.view === currentView) { if(currentView === 'sam') btn.classList.add('active'); else if(currentView === 'joy') btn.classList.add('joy-active'); else btn.classList.add('shared-active'); } }); }
+    document.getElementById("authBtn")?.addEventListener("click", () => { let name = document.getElementById("authName").value.trim(); let pass = document.getElementById("authPass").value; if((name === "Sam" && CRED.Sam === pass) || (name === "Joy" && CRED.Joy === pass)) { currentUser = name; document.getElementById("authScreen").style.display = "none"; document.getElementById("mainApp").style.display = "block"; loadAll(); renderApp(); } else { document.getElementById("authError").innerText = "Only Sam or Joy can enter this heart."; } });
+    document.getElementById("themeToggleBtn")?.addEventListener("click", () => { document.body.classList.toggle("dark"); });
+    document.getElementById("viewToggleBtn")?.addEventListener("click", () => { document.body.classList.toggle("list-mode"); renderItems(); });
+    document.querySelectorAll(".tab-btn").forEach(btn => btn.addEventListener("click", (e) => { currentView = btn.dataset.view; renderApp(); }));
+    document.getElementById("searchInput")?.addEventListener("input", () => renderItems());
+    document.getElementById("filterStatus")?.addEventListener("change", () => renderItems());
+    document.getElementById("filterCategory")?.addEventListener("change", () => renderItems());
+    document.getElementById("exportBackupBtn")?.addEventListener("click", exportBackup);
+    document.getElementById("importBackupBtn")?.addEventListener("click", () => { let input = document.createElement('input'); input.type='file'; input.accept='application/json'; input.onchange=e=>importBackup(input.files[0]); input.click(); });
+    document.getElementById("randomDreamBtn")?.addEventListener("click", randomDreamPicker);
+    document.getElementById("quoteBtn")?.addEventListener("click", randomQuote);
+</script>
+</body>
+</html>
