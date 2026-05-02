@@ -155,18 +155,19 @@
         .tag { background: #f3e1d4; padding: 4px 14px; border-radius: 60px; font-size: 0.7rem; font-weight: 700; }
         .real-time-badge { font-size: 0.7rem; background: rgba(217, 137, 95, 0.2); border-radius: 20px; padding: 2px 8px; margin-left: 8px; }
         .btn-primary { background: linear-gradient(105deg, #e2855f, #c2633a); border: none; padding: 10px 24px; border-radius: 60px; color: white; font-weight: bold; cursor: pointer; }
-        .voice-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(20px); display: flex; align-items: center; justify-content: center; z-index: 2000; }
+        .voice-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(20px); display: flex; align-items: center; justify-content: center; z-index: 2000; }
         .voice-modal-content { background: linear-gradient(145deg, rgba(255, 245, 240, 0.98), rgba(255, 235, 225, 0.98)); border-radius: 2.5rem; padding: 2rem 1.8rem; max-width: 420px; width: 90%; text-align: center; }
         body.dark .voice-modal-content { background: linear-gradient(145deg, #2a2535, #1f1b2a); }
         .voice-timer { font-size: 3.2rem; font-weight: 800; font-family: monospace; margin: 0.8rem 0; }
         .voice-wave { display: flex; justify-content: center; gap: 7px; height: 70px; margin: 0.8rem 0; }
-        .voice-wave span { width: 6px; height: 22px; background: #d98b5b; border-radius: 20px; }
+        .voice-wave span { width: 6px; height: 22px; background: #d98b5b; border-radius: 20px; transition: height 0.05s ease; }
         .recording-active .voice-wave span { animation: waveRomance 0.55s infinite ease alternate; }
         @keyframes waveRomance { 0% { height: 18px; } 100% { height: 52px; } }
         footer { text-align: center; margin-top: 2rem; font-size: 0.7rem; opacity: 0.7; }
         .permission-badge { background: #e07a5f20; border-radius: 60px; padding: 5px 14px; font-size: 0.8rem; display: inline-block; margin-left: 12px; font-weight: 500; }
         .add-disabled-msg { background: #ffddcc; color: #b05a3a; border-radius: 60px; padding: 12px 20px; text-align: center; font-weight: 600; margin-bottom: 1rem; }
         body.dark .add-disabled-msg { background: #322a24; color: #f0bc9a; }
+        .quality-badge { font-size: 0.7rem; background: #2d6a4f20; border-radius: 40px; padding: 2px 8px; display: inline-block; margin-left: 6px; }
     </style>
 </head>
 <body>
@@ -246,9 +247,115 @@
     // Helper: check if current user can add to a given listType
     function canUserAddToList(listType) {
         if (!currentUser) return false;
-        if (listType === currentUser.toLowerCase()) return true;   // Sam can add to "sam", Joy can add to "joy"
-        if (listType === "shared") return true;                    // Both can add to shared
+        if (listType === currentUser.toLowerCase()) return true;
+        if (listType === "shared") return true;
         return false;
+    }
+
+    // HIGH QUALITY VOICE RECORDER with better audio settings
+    function openVoiceRecorder(callback) {
+        const modal = document.createElement('div'); modal.className = 'voice-modal';
+        modal.innerHTML = `<div class="voice-modal-content"><i class="fas fa-microphone-alt" style="font-size:2rem; color:#e76f51;"></i><h3 style="margin:12px 0;">❤️ clear voice whisper ❤️</h3><p style="font-size:0.8rem; opacity:0.7;">🎙️ High-quality recording · crystal clear</p><div class="voice-timer" id="voiceTimerDisplay">00:00</div><div class="voice-wave" id="voiceWave"><span></span><span></span><span></span><span></span><span></span><span></span></div><div class="voice-buttons" style="display:flex; gap:12px; justify-content:center; margin-top:16px;"><button id="voiceStartBtn" class="voice-btn-record"><i class="fas fa-circle"></i> Start</button><button id="voiceStopBtn" class="voice-btn-stop" disabled><i class="fas fa-stop"></i> Stop & Save</button><button id="voiceCancelBtn" class="voice-btn-cancel"><i class="fas fa-times"></i> Cancel</button></div></div>`;
+        document.body.appendChild(modal);
+        
+        // Add styles for buttons
+        const style = document.createElement('style');
+        style.textContent = `.voice-btn-record, .voice-btn-stop, .voice-btn-cancel { padding: 12px 28px; border-radius: 60px; font-weight: 700; border: none; cursor: pointer; font-size: 0.9rem; transition: 0.2s; } .voice-btn-record { background: linear-gradient(110deg, #e76f51, #d65c38); color: white; } .voice-btn-record:hover { transform: scale(1.02); } .voice-btn-stop { background: #4a4a5e; color: white; } .voice-btn-stop:hover:not(:disabled) { background: #2d6a4f; } .voice-btn-cancel { background: transparent; border: 1px solid rgba(129, 83, 60, 0.4); color: #734b2e; } .voice-btn-cancel:hover { background: rgba(0,0,0,0.05); } .voice-btn-record:disabled, .voice-btn-stop:disabled { opacity: 0.5; cursor: not-allowed; }`;
+        document.head.appendChild(style);
+        
+        const timerDisplay = document.getElementById('voiceTimerDisplay');
+        const startBtn = document.getElementById('voiceStartBtn');
+        const stopBtn = document.getElementById('voiceStopBtn');
+        const cancelBtn = document.getElementById('voiceCancelBtn');
+        
+        let seconds = 0, timerInterval = null, mediaStream = null, mediaRecorder = null, audioChunks = [];
+        
+        function updateTimerDisplay() {
+            const mins = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            timerDisplay.textContent = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+        }
+        
+        function startRecording() {
+            // Request high-quality audio constraints
+            const audioConstraints = {
+                audio: {
+                    echoCancellation: true,
+                    noiseSuppression: true,
+                    autoGainControl: true,
+                    sampleRate: 48000,      // CD quality sample rate
+                    channelCount: 1,         // mono is fine for voice, saves size but keeps clarity
+                    latency: 0.01
+                }
+            };
+            
+            navigator.mediaDevices.getUserMedia(audioConstraints)
+                .then(stream => {
+                    mediaStream = stream;
+                    // Use audio/webm with higher bitrate - we'll set bits per second for better quality
+                    // For better compatibility and quality, use 'audio/webm' with explicit high bitrate
+                    let options = { mimeType: 'audio/webm' };
+                    // Try to get higher quality by checking for better codecs
+                    if (MediaRecorder.isTypeSupported('audio/webm;codecs=opus')) {
+                        options = { mimeType: 'audio/webm;codecs=opus', audioBitsPerSecond: 128000 };
+                    } else if (MediaRecorder.isTypeSupported('audio/mp4;codecs=mp4a')) {
+                        options = { mimeType: 'audio/mp4;codecs=mp4a', audioBitsPerSecond: 128000 };
+                    } else {
+                        options = { audioBitsPerSecond: 128000 }; // default high bitrate
+                    }
+                    
+                    mediaRecorder = new MediaRecorder(stream, options);
+                    audioChunks = [];
+                    
+                    mediaRecorder.ondataavailable = (event) => {
+                        if (event.data.size > 0) audioChunks.push(event.data);
+                    };
+                    
+                    mediaRecorder.onstop = () => {
+                        if (timerInterval) clearInterval(timerInterval);
+                        // Create blob with high-quality audio
+                        const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+                        const reader = new FileReader();
+                        reader.onload = function () {
+                            modal.remove();
+                            if (callback) callback(reader.result);
+                        };
+                        reader.readAsDataURL(audioBlob);
+                        if (mediaStream) mediaStream.getTracks().forEach(track => track.stop());
+                    };
+                    
+                    mediaRecorder.start(100); // Collect data in 100ms chunks for smooth saving
+                    seconds = 0;
+                    updateTimerDisplay();
+                    timerInterval = setInterval(() => {
+                        seconds++;
+                        updateTimerDisplay();
+                    }, 1000);
+                    
+                    startBtn.disabled = true;
+                    stopBtn.disabled = false;
+                    modal.querySelector('.voice-modal-content')?.classList.add('recording-active');
+                })
+                .catch(err => {
+                    console.error("Microphone error:", err);
+                    alert("🎙️ Unable to access microphone. Please check permissions and ensure a mic is connected.");
+                    modal.remove();
+                });
+        }
+        
+        startBtn.onclick = startRecording;
+        stopBtn.onclick = () => {
+            if (mediaRecorder && mediaRecorder.state === "recording") {
+                mediaRecorder.stop();
+            }
+        };
+        cancelBtn.onclick = () => {
+            if (mediaRecorder && mediaRecorder.state === "recording") {
+                mediaRecorder.stop();
+            }
+            if (mediaStream) mediaStream.getTracks().forEach(t => t.stop());
+            modal.remove();
+        };
     }
 
     // authentication
@@ -274,15 +381,14 @@
             document.getElementById("mainApp").style.display = "block";
             document.getElementById("currentUserDisplay").innerHTML = `<i class="fas fa-user-check"></i> Logged as ${currentUser} 🩷`;
             
-            // --- FIX: Set default view based on logged-in user ---
-            // If Joy logs in, default to "joy" view. If Sam logs in, default to "sam" view.
+            // Set default view based on logged-in user
             if (currentUser === "Joy") {
                 currentView = "joy";
             } else {
                 currentView = "sam";
             }
             applyViewTheme(currentView);
-            renderApp(); // Force initial render with correct view
+            renderApp();
         } else {
             document.getElementById("authError").innerText = "Only Sam or Joy can enter this heart.";
             statusDiv.innerHTML = "🔐 Authentication failed";
@@ -321,17 +427,6 @@
     }
     function showCelebration() { let cont = document.getElementById("itemsContainer"); if (cont) cont.style.animation = "none"; setTimeout(() => { if (cont) cont.style.animation = "gentlePop 0.4s ease"; }, 10); }
 
-    function openVoiceRecorder(callback) {
-        const modal = document.createElement('div'); modal.className = 'voice-modal';
-        modal.innerHTML = `<div class="voice-modal-content"><i class="fas fa-microphone-alt"></i><h3>❤️ voice whisper ❤️</h3><div class="voice-timer" id="voiceTimerDisplay">00:00</div><div class="voice-wave" id="voiceWave"><span></span><span></span><span></span><span></span><span></span><span></span></div><div class="voice-buttons"><button id="voiceStartBtn" class="voice-btn-record"><i class="fas fa-circle"></i> Start Recording</button><button id="voiceStopBtn" class="voice-btn-stop" disabled><i class="fas fa-stop"></i> Stop & Save</button><button id="voiceCancelBtn" class="voice-btn-cancel"><i class="fas fa-times"></i> Cancel</button></div></div>`;
-        document.body.appendChild(modal); const style = document.createElement('style'); style.textContent = `.voice-btn-record, .voice-btn-stop, .voice-btn-cancel { padding: 10px 24px; border-radius: 60px; font-weight: 700; border: none; cursor: pointer; } .voice-btn-record { background: linear-gradient(110deg, #e76f51, #d65c38); color: white; } .voice-btn-stop { background: #4a4a5e; color: white; } .voice-btn-cancel { background: transparent; border: 1px solid rgba(129, 83, 60, 0.4); }`; document.head.appendChild(style);
-        const timerDisplay = document.getElementById('voiceTimerDisplay'); const startBtn = document.getElementById('voiceStartBtn'); const stopBtn = document.getElementById('voiceStopBtn'); const cancelBtn = document.getElementById('voiceCancelBtn');
-        let seconds = 0, timerInterval = null, mediaStream = null, mediaRecorder = null, audioChunks = [];
-        function updateTimerDisplay() { const mins = Math.floor(seconds / 60); const secs = seconds % 60; timerDisplay.textContent = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`; }
-        function startRecording() { navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => { mediaStream = stream; mediaRecorder = new MediaRecorder(stream); audioChunks = []; mediaRecorder.ondataavailable = (event) => { if (event.data.size > 0) audioChunks.push(event.data); }; mediaRecorder.onstop = () => { if (timerInterval) clearInterval(timerInterval); const audioBlob = new Blob(audioChunks, { type: 'audio/webm' }); const reader = new FileReader(); reader.onload = function () { modal.remove(); if (callback) callback(reader.result); }; reader.readAsDataURL(audioBlob); if (mediaStream) mediaStream.getTracks().forEach(track => track.stop()); }; mediaRecorder.start(); seconds = 0; updateTimerDisplay(); timerInterval = setInterval(() => { seconds++; updateTimerDisplay(); }, 1000); startBtn.disabled = true; stopBtn.disabled = false; modal.querySelector('.voice-modal-content')?.classList.add('recording-active'); }).catch(() => { alert("🎙️ Please allow microphone access"); modal.remove(); }); }
-        startBtn.onclick = startRecording; stopBtn.onclick = () => { if (mediaRecorder?.state === "recording") mediaRecorder.stop(); }; cancelBtn.onclick = () => { if (mediaRecorder?.state === "recording") mediaRecorder.stop(); if (mediaStream) mediaStream.getTracks().forEach(t => t.stop()); modal.remove(); };
-    }
-
     function renderAddForm() {
         const container = document.getElementById("addFormContainer"); if (!container) return;
         const canAddToCurrent = canUserAddToList(currentView);
@@ -347,16 +442,16 @@
             <div style="display:flex; gap:12px; flex-wrap:wrap;">
                 <label class="icon-btn" for="imageUpload" style="cursor:pointer; ${!canAddToCurrent ? 'opacity:0.5; pointer-events:none;' : ''}"><i class="fas fa-camera"></i> 📸 attach image</label>
                 <input type="file" id="imageUpload" accept="image/*" style="display:none" ${!canAddToCurrent ? 'disabled' : ''}>
-                <button id="voiceRecorderBtn" class="icon-btn" ${!canAddToCurrent ? 'disabled style="opacity:0.5;"' : ''}><i class="fas fa-microphone"></i> 🎙️ voice note</button>
+                <button id="voiceRecorderBtn" class="icon-btn" ${!canAddToCurrent ? 'disabled style="opacity:0.5;"' : ''}><i class="fas fa-microphone"></i> 🎙️ voice note <span class="quality-badge">HD audio</span></button>
                 <button id="addBtnMain" class="btn-primary" ${!canAddToCurrent ? 'disabled style="opacity:0.5;"' : ''}><i class="fas fa-heart"></i> plant this dream</button>
             </div>
             <div id="mediaPreview" style="display:flex; gap:12px; flex-wrap:wrap;"></div>
         </div>`;
         if (!canAddToCurrent) return;
         let pendingImage = null, pendingAudio = null; const previewDiv = document.getElementById("mediaPreview");
-        function updatePreview() { if (!previewDiv) return; previewDiv.innerHTML = ''; if (pendingImage) previewDiv.innerHTML += `<div class="media-preview"><i class="fas fa-image"></i> photo selected <button id="clearImageBtn" style="background:none; border:none; color:#e07a5f; cursor:pointer;">✖</button></div>`; if (pendingAudio) previewDiv.innerHTML += `<div class="media-preview"><i class="fas fa-headphones"></i> voice recorded <button id="clearAudioBtn" style="background:none; border:none; color:#e07a5f; cursor:pointer;">✖</button></div>`; document.getElementById("clearImageBtn")?.addEventListener("click", () => { pendingImage = null; updatePreview(); }); document.getElementById("clearAudioBtn")?.addEventListener("click", () => { pendingAudio = null; updatePreview(); }); }
+        function updatePreview() { if (!previewDiv) return; previewDiv.innerHTML = ''; if (pendingImage) previewDiv.innerHTML += `<div class="media-preview"><i class="fas fa-image"></i> photo selected <button id="clearImageBtn" style="background:none; border:none; color:#e07a5f; cursor:pointer;">✖</button></div>`; if (pendingAudio) previewDiv.innerHTML += `<div class="media-preview"><i class="fas fa-headphones"></i> high-quality voice recorded <button id="clearAudioBtn" style="background:none; border:none; color:#e07a5f; cursor:pointer;">✖</button></div>`; document.getElementById("clearImageBtn")?.addEventListener("click", () => { pendingImage = null; updatePreview(); }); document.getElementById("clearAudioBtn")?.addEventListener("click", () => { pendingAudio = null; updatePreview(); }); }
         document.getElementById("imageUpload")?.addEventListener("change", (e) => { const file = e.target.files[0]; if (file) { const reader = new FileReader(); reader.onload = ev => { pendingImage = ev.target.result; updatePreview(); }; reader.readAsDataURL(file); } });
-        document.getElementById("voiceRecorderBtn")?.addEventListener("click", () => { openVoiceRecorder((audioBase64) => { pendingAudio = audioBase64; updatePreview(); alert("Voice captured — will be part of this dream"); }); });
+        document.getElementById("voiceRecorderBtn")?.addEventListener("click", () => { openVoiceRecorder((audioBase64) => { pendingAudio = audioBase64; updatePreview(); alert("✨ Crystal clear voice captured! ✨"); }); });
         document.getElementById("addBtnMain")?.addEventListener("click", () => { const title = document.getElementById("newTitle")?.value || ""; const desc = document.getElementById("newDesc")?.value || ""; const cat = document.getElementById("newCat")?.value || "adventure"; if (addItemToList(currentView, title, desc, cat, pendingImage, pendingAudio)) { const titleInput = document.getElementById("newTitle"); const descInput = document.getElementById("newDesc"); if (titleInput) titleInput.value = ""; if (descInput) descInput.value = ""; pendingImage = null; pendingAudio = null; updatePreview(); const fileInput = document.getElementById("imageUpload"); if (fileInput) fileInput.value = ""; } });
     }
 
@@ -378,7 +473,7 @@
         const container = document.getElementById("itemsContainer"); if (!container) return;
         const isGridView = !document.body.classList.contains("list-mode"); container.className = isGridView ? "cards-grid" : "cards-grid list-view";
         if (filtered.length === 0) { container.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:3rem;">💫 Add your first magical entry 💫</div>`; return; }
-        container.innerHTML = filtered.map(item => `<div class="bucket-item ${item.completed ? 'completed' : ''}"><div class="item-title">${item.completed ? '<i class="fas fa-check-circle" style="color:#2d6a4f;"></i>' : '<i class="far fa-heart" style="color:#e76f51;"></i>'} <span class="${item.completed ? 'strike' : ''}">${escapeHtml(item.title)}</span><span class="tag">${item.category}</span><span class="real-time-badge"><i class="fas fa-user"></i> ${escapeHtml(item.createdBy)}</span></div>${item.description ? `<div style="margin:10px 0; font-size:0.85rem;">${escapeHtml(item.description)}</div>` : ''}${item.imageDataUrl ? `<img src="${item.imageDataUrl}" style="max-width:100%; max-height:170px; border-radius:20px; margin:10px 0;">` : ''}${item.audioUrl ? `<audio controls src="${item.audioUrl}" style="width:100%; margin:8px 0;"></audio>` : ''}<div style="display:flex; justify-content:space-between; margin-top:12px; font-size:0.7rem;"><span><i class="far fa-calendar-alt"></i> ${new Date(item.createdAt).toLocaleDateString()}</span></div><div style="display:flex; gap:10px; margin-top:14px;"><button class="icon-btn complete-btn" data-id="${item.id}" data-list="${currentView}"><i class="fas ${item.completed ? 'fa-undo-alt' : 'fa-check-double'}"></i> ${item.completed ? 'undo' : 'done'}</button><button class="icon-btn edit-btn" data-id="${item.id}" data-list="${currentView}"><i class="fas fa-edit"></i> edit</button><button class="icon-btn delete-btn" data-id="${item.id}" data-list="${currentView}"><i class="fas fa-trash"></i> delete</button></div></div>`).join('');
+        container.innerHTML = filtered.map(item => `<div class="bucket-item ${item.completed ? 'completed' : ''}"><div class="item-title">${item.completed ? '<i class="fas fa-check-circle" style="color:#2d6a4f;"></i>' : '<i class="far fa-heart" style="color:#e76f51;"></i>'} <span class="${item.completed ? 'strike' : ''}">${escapeHtml(item.title)}</span><span class="tag">${item.category}</span><span class="real-time-badge"><i class="fas fa-user"></i> ${escapeHtml(item.createdBy)}</span></div>${item.description ? `<div style="margin:10px 0; font-size:0.85rem;">${escapeHtml(item.description)}</div>` : ''}${item.imageDataUrl ? `<img src="${item.imageDataUrl}" style="max-width:100%; max-height:170px; border-radius:20px; margin:10px 0;">` : ''}${item.audioUrl ? `<audio controls src="${item.audioUrl}" style="width:100%; margin:8px 0; border-radius:30px;"></audio>` : ''}<div style="display:flex; justify-content:space-between; margin-top:12px; font-size:0.7rem;"><span><i class="far fa-calendar-alt"></i> ${new Date(item.createdAt).toLocaleDateString()}</span></div><div style="display:flex; gap:10px; margin-top:14px;"><button class="icon-btn complete-btn" data-id="${item.id}" data-list="${currentView}"><i class="fas ${item.completed ? 'fa-undo-alt' : 'fa-check-double'}"></i> ${item.completed ? 'undo' : 'done'}</button><button class="icon-btn edit-btn" data-id="${item.id}" data-list="${currentView}"><i class="fas fa-edit"></i> edit</button><button class="icon-btn delete-btn" data-id="${item.id}" data-list="${currentView}"><i class="fas fa-trash"></i> delete</button></div></div>`).join('');
         document.querySelectorAll('.complete-btn').forEach(btn => btn.addEventListener('click', () => toggleComplete(btn.dataset.list, btn.dataset.id)));
         document.querySelectorAll('.edit-btn').forEach(btn => btn.addEventListener('click', () => editItem(btn.dataset.list, btn.dataset.id)));
         document.querySelectorAll('.delete-btn').forEach(btn => btn.addEventListener('click', () => deleteItem(btn.dataset.list, btn.dataset.id)));
