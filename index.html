@@ -273,7 +273,16 @@
             document.getElementById("authScreen").style.display = "none";
             document.getElementById("mainApp").style.display = "block";
             document.getElementById("currentUserDisplay").innerHTML = `<i class="fas fa-user-check"></i> Logged as ${currentUser} 🩷`;
+            
+            // --- FIX: Set default view based on logged-in user ---
+            // If Joy logs in, default to "joy" view. If Sam logs in, default to "sam" view.
+            if (currentUser === "Joy") {
+                currentView = "joy";
+            } else {
+                currentView = "sam";
+            }
             applyViewTheme(currentView);
+            renderApp(); // Force initial render with correct view
         } else {
             document.getElementById("authError").innerText = "Only Sam or Joy can enter this heart.";
             statusDiv.innerHTML = "🔐 Authentication failed";
