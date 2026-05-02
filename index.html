@@ -341,6 +341,11 @@
             font-size: 0.7rem;
             opacity: 0.7;
         }
+
+        @keyframes gentlePop {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(0.98); }
+        }
     </style>
 </head>
 <body>
@@ -353,7 +358,7 @@
         <input type="password" id="authPass" placeholder="password" class="auth-input">
         <button class="btn-auth" id="authBtn">Unlock our world ❤️</button>
         <div id="authError" style="color:#e07a5f; margin-top:12px;"></div>
-        <div id="connectionStatus" style="font-size:0.8rem; margin-top:12px; color:#2d6a4f;">🔄 Connecting to cloud...</div>
+        <div id="connectionStatus" style="font-size:0.8rem; margin-top:12px; color:#2d6a4f;">🔄 Ready to connect...</div>
     </div>
 </div>
 
@@ -361,7 +366,7 @@
 <div class="app-container">
     <div class="hero">
         <h1><i class="fas fa-infinity"></i> Sam & Joy · Everlasting</h1>
-        <div class="sub"><i class="fas fa-cloud-upload-alt"></i> Cloud-synced · Any device, anytime</div>
+        <div class="sub"><i class="fas fa-cloud-upload-alt"></i> ☁️ Cloud-synced · Any device, anytime</div>
         <div style="margin-top: 16px; display: flex; justify-content: center; gap: 12px;">
             <button id="themeToggleBtn" class="icon-btn"><i class="fas fa-moon"></i> Dark Mode</button>
             <button id="viewToggleBtn" class="icon-btn"><i class="fas fa-th-large"></i> Grid/List</button>
@@ -381,8 +386,8 @@
             <input type="text" id="searchInput" placeholder="🔍 search dreams...">
             <select id="filterStatus"><option value="all">All vibes</option><option value="pending">Adventures ahead</option><option value="completed">Completed magic</option></select>
             <select id="filterCategory"><option value="all">All categories</option><option value="adventure">🌄 Adventure</option><option value="romance">💖 Romance</option><option value="growth">🌱 Growth</option></select>
-            <button id="exportBackupBtn" class="icon-btn"><i class="fas fa-download"></i> Save</button>
-            <button id="importBackupBtn" class="icon-btn"><i class="fas fa-upload"></i> Load</button>
+            <button id="exportBackupBtn" class="icon-btn"><i class="fas fa-download"></i> Backup</button>
+            <button id="importBackupBtn" class="icon-btn"><i class="fas fa-upload"></i> Restore</button>
         </div>
         <div>
             <button id="randomDreamBtn" class="icon-btn"><i class="fas fa-dice-d6"></i> Dream of the moment</button>
@@ -390,25 +395,24 @@
         </div>
     </div>
 
-    <div id="addFormContainer" style="background: var(--card-glass); backdrop-filter: blur(10px); border-radius: 2rem; padding: 1.8rem; margin-bottom: 2rem;"></div>
+    <div id="addFormContainer" style="background: rgba(255, 250, 245, 0.92); backdrop-filter: blur(10px); border-radius: 2rem; padding: 1.8rem; margin-bottom: 2rem;"></div>
     <div id="itemsContainer" class="cards-grid"></div>
     <div id="inspireQuote" style="margin-top: 1.5rem; text-align: center; font-style: italic;"></div>
-    <footer><i class="fas fa-globe"></i> Cloud-synced with love · <span id="syncStatus">✨ live across all devices</span></footer>
+    <footer><i class="fas fa-globe"></i> ☁️ Live cloud-sync · <span id="syncStatus">✨ connected and syncing</span></footer>
 </div>
 </div>
 
 <script>
-    // ========== FIREBASE CONFIGURATION ==========
-    // This is a FREE Firebase Realtime Database instance created for this app
-    // All data is stored in the cloud and synced in real-time across all browsers/devices
+    // ========== YOUR FIREBASE CONFIGURATION ==========
+    // This is YOUR unique Firebase project - data is private and secure
     const firebaseConfig = {
-        apiKey: "AIzaSyB7UyQ1xNvLx8kHmJ9rQpLxW3eRtyUioPa",
-        authDomain: "everlasting-bonds.firebaseapp.com",
-        databaseURL: "https://everlasting-bonds-default-rtdb.firebaseio.com",
-        projectId: "everlasting-bonds",
-        storageBucket: "everlasting-bonds.firebasestorage.app",
-        messagingSenderId: "123456789012",
-        appId: "1:123456789012:web:abcdef1234567890"
+        apiKey: "AIzaSyBaCUlB34vC_WC_YR3nTVUwOnWV4MXqcDI",
+        authDomain: "sam-and-joy-bucketlist.firebaseapp.com",
+        databaseURL: "https://sam-and-joy-bucketlist-default-rtdb.firebaseio.com",
+        projectId: "sam-and-joy-bucketlist",
+        storageBucket: "sam-and-joy-bucketlist.firebasestorage.app",
+        messagingSenderId: "816236882392",
+        appId: "1:816236882392:web:fccf188e4caaba92906aad"
     };
     
     // Initialize Firebase
@@ -445,7 +449,12 @@
             connectedRef.on('value', (snap) => {
                 if (snap.val() === true) {
                     statusDiv.innerHTML = "✅ Connected to cloud! Loading your shared memories...";
-                    setTimeout(() => statusDiv.style.opacity = "0", 1500);
+                    setTimeout(() => {
+                        if(statusDiv) statusDiv.style.opacity = "0";
+                        setTimeout(() => {
+                            if(statusDiv) statusDiv.style.display = "none";
+                        }, 1000);
+                    }, 1500);
                 } else {
                     statusDiv.innerHTML = "⚠️ Connecting to network...";
                 }
@@ -457,7 +466,6 @@
             document.getElementById("authScreen").style.display = "none";
             document.getElementById("mainApp").style.display = "block";
             
-            statusDiv.innerHTML = "✨ Cloud synced · Real-time active ✨";
         } else {
             document.getElementById("authError").innerText = "Only Sam or Joy can enter this heart.";
             statusDiv.innerHTML = "🔐 Authentication failed";
@@ -465,7 +473,7 @@
     });
     
     function setupRealtimeSync() {
-        // Listen to Sam's list - BOTH users see the same data
+        // Listen to Sam's list - BOTH users see the same data instantly
         samRef.on('value', (snapshot) => {
             const data = snapshot.val();
             if (data) {
@@ -473,11 +481,14 @@
             } else {
                 samItems = [];
             }
-            if (!isInitialLoad) renderApp();
+            if (!isInitialLoad) {
+                renderApp();
+                showSyncNotification();
+            }
             updateStats();
         });
         
-        // Listen to Joy's list - BOTH users see the same data
+        // Listen to Joy's list - BOTH users see the same data instantly
         joyRef.on('value', (snapshot) => {
             const data = snapshot.val();
             if (data) {
@@ -485,11 +496,14 @@
             } else {
                 joyItems = [];
             }
-            if (!isInitialLoad) renderApp();
+            if (!isInitialLoad) {
+                renderApp();
+                showSyncNotification();
+            }
             updateStats();
         });
         
-        // Listen to Shared list - BOTH users see the same data
+        // Listen to Shared list - BOTH users see the same data instantly
         sharedRef.on('value', (snapshot) => {
             const data = snapshot.val();
             if (data) {
@@ -497,19 +511,25 @@
             } else {
                 sharedItems = [];
             }
-            if (!isInitialLoad) renderApp();
-            updateStats();
-            
-            // Show sync notification
-            const syncBadge = document.getElementById('syncStatus');
-            if (syncBadge && !isInitialLoad) {
-                syncBadge.innerHTML = '🔄 real-time update received';
-                setTimeout(() => { if(syncBadge) syncBadge.innerHTML = '✨ live across all devices'; }, 2000);
+            if (!isInitialLoad) {
+                renderApp();
+                showSyncNotification();
             }
+            updateStats();
         });
         
         isInitialLoad = false;
         renderApp();
+    }
+    
+    function showSyncNotification() {
+        const syncBadge = document.getElementById('syncStatus');
+        if (syncBadge) {
+            syncBadge.innerHTML = '🔄 real-time update received';
+            setTimeout(() => { 
+                if(syncBadge) syncBadge.innerHTML = '✨ live across all devices'; 
+            }, 2000);
+        }
     }
     
     function addItemToList(listType, title, desc, category, imageDataUrl = null, audioDataUrl = null) {
@@ -675,11 +695,13 @@
     
     function renderAddForm() {
         const container = document.getElementById("addFormContainer");
+        if (!container) return;
+        
         container.innerHTML = `<div style="display:flex; flex-direction:column; gap:14px;">
             <div style="display:flex; flex-wrap:wrap; gap:12px;">
-                <input type="text" id="newTitle" placeholder="✨ dream title..." style="flex:2; padding:12px 20px; border-radius:60px; border:1px solid #ffcfb5;">
-                <input type="text" id="newDesc" placeholder="add a memory note..." style="flex:3; padding:12px 20px; border-radius:60px;">
-                <select id="newCat" style="padding:10px; border-radius:60px;">
+                <input type="text" id="newTitle" placeholder="✨ dream title..." style="flex:2; padding:12px 20px; border-radius:60px; border:1px solid #ffcfb5; background:rgba(255,248,240,0.9);">
+                <input type="text" id="newDesc" placeholder="add a memory note..." style="flex:3; padding:12px 20px; border-radius:60px; border:1px solid #ffcfb5; background:rgba(255,248,240,0.9);">
+                <select id="newCat" style="padding:10px; border-radius:60px; border:1px solid #ffcfb5; background:rgba(255,248,240,0.9);">
                     <option value="adventure">🌄 Adventure</option><option value="romance">💖 Romance</option><option value="growth">🌱 Growth</option>
                 </select>
             </div>
@@ -695,9 +717,10 @@
         let pendingImage = null, pendingAudio = null;
         const previewDiv = document.getElementById("mediaPreview");
         function updatePreview() {
+            if (!previewDiv) return;
             previewDiv.innerHTML = '';
-            if (pendingImage) previewDiv.innerHTML += `<div class="media-preview"><i class="fas fa-image"></i> photo selected <button id="clearImageBtn" style="background:none; border:none; color:#e07a5f;">✖</button></div>`;
-            if (pendingAudio) previewDiv.innerHTML += `<div class="media-preview"><i class="fas fa-headphones"></i> voice recorded <button id="clearAudioBtn" style="background:none; border:none; color:#e07a5f;">✖</button></div>`;
+            if (pendingImage) previewDiv.innerHTML += `<div class="media-preview"><i class="fas fa-image"></i> photo selected <button id="clearImageBtn" style="background:none; border:none; color:#e07a5f; cursor:pointer;">✖</button></div>`;
+            if (pendingAudio) previewDiv.innerHTML += `<div class="media-preview"><i class="fas fa-headphones"></i> voice recorded <button id="clearAudioBtn" style="background:none; border:none; color:#e07a5f; cursor:pointer;">✖</button></div>`;
             document.getElementById("clearImageBtn")?.addEventListener("click", () => { pendingImage = null; updatePreview(); });
             document.getElementById("clearAudioBtn")?.addEventListener("click", () => { pendingAudio = null; updatePreview(); });
         }
@@ -710,14 +733,17 @@
             openVoiceRecorder((audioBase64) => { pendingAudio = audioBase64; updatePreview(); alert("Voice captured — will be part of this dream"); });
         });
         document.getElementById("addBtnMain")?.addEventListener("click", () => {
-            const title = document.getElementById("newTitle").value;
-            const desc = document.getElementById("newDesc").value;
-            const cat = document.getElementById("newCat").value;
+            const title = document.getElementById("newTitle")?.value || "";
+            const desc = document.getElementById("newDesc")?.value || "";
+            const cat = document.getElementById("newCat")?.value || "adventure";
             if (addItemToList(currentView, title, desc, cat, pendingImage, pendingAudio)) {
-                document.getElementById("newTitle").value = "";
-                document.getElementById("newDesc").value = "";
+                const titleInput = document.getElementById("newTitle");
+                const descInput = document.getElementById("newDesc");
+                if (titleInput) titleInput.value = "";
+                if (descInput) descInput.value = "";
                 pendingImage = null; pendingAudio = null; updatePreview();
-                document.getElementById("imageUpload").value = "";
+                const fileInput = document.getElementById("imageUpload");
+                if (fileInput) fileInput.value = "";
             }
         });
     }
@@ -743,6 +769,7 @@
             return true;
         });
         const container = document.getElementById("itemsContainer");
+        if (!container) return;
         const isGridView = !document.body.classList.contains("list-mode");
         container.className = isGridView ? "cards-grid" : "cards-grid list-view";
         if (filtered.length === 0) { container.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:3rem;">💫 Add your first magical entry 💫</div>`; return; }
@@ -768,7 +795,10 @@
         const totalSam = samItems.length, completedSam = samItems.filter(i=>i.completed).length;
         const totalJoy = joyItems.length, completedJoy = joyItems.filter(i=>i.completed).length;
         const totalShared = sharedItems.length, completedShared = sharedItems.filter(i=>i.completed).length;
-        document.getElementById("statsPanel").innerHTML = `<div class="stat-card"><i class="fas fa-leaf"></i> Sam's Garden ${completedSam}/${totalSam}</div><div class="stat-card"><i class="fas fa-feather-alt"></i> Joy's Whimsy ${completedJoy}/${totalJoy}</div><div class="stat-card"><i class="fas fa-heart"></i> Shared ${completedShared}/${totalShared}</div><div class="stat-card"><i class="fas fa-infinity"></i> total ${totalSam+totalJoy+totalShared}</div>`;
+        const statsPanel = document.getElementById("statsPanel");
+        if (statsPanel) {
+            statsPanel.innerHTML = `<div class="stat-card"><i class="fas fa-leaf"></i> Sam's Garden ${completedSam}/${totalSam}</div><div class="stat-card"><i class="fas fa-feather-alt"></i> Joy's Whimsy ${completedJoy}/${totalJoy}</div><div class="stat-card"><i class="fas fa-heart"></i> Shared ${completedShared}/${totalShared}</div><div class="stat-card"><i class="fas fa-infinity"></i> total ${totalSam+totalJoy+totalShared}</div>`;
+        }
     }
     
     function randomDreamPicker() {
@@ -779,7 +809,10 @@
     }
     
     const quotes = ["Where you are is home.", "Every love story is beautiful, but ours is my favorite.", "Let's wander where the Wi-Fi is weak.", "You are my greatest adventure.", "Together is a wonderful place to be.", "You make my soul smile."];
-    function randomQuote() { document.getElementById("inspireQuote").innerHTML = `<i class="fas fa-feather-alt"></i> ${quotes[Math.floor(Math.random() * quotes.length)]}`; }
+    function randomQuote() { 
+        const quoteDiv = document.getElementById("inspireQuote");
+        if (quoteDiv) quoteDiv.innerHTML = `<i class="fas fa-feather-alt"></i> ${quotes[Math.floor(Math.random() * quotes.length)]}`; 
+    }
     
     function exportBackup() {
         const data = { samItems, joyItems, sharedItems, exportedAt: new Date().toISOString() };
@@ -796,7 +829,6 @@
             try {
                 const json = JSON.parse(e.target.result);
                 if (json.samItems) {
-                    // Clear existing and import
                     samRef.remove().then(() => {
                         json.samItems.forEach(item => {
                             const { id, ...itemData } = item;
@@ -804,18 +836,22 @@
                         });
                     });
                     joyRef.remove().then(() => {
-                        json.joyItems?.forEach(item => {
-                            const { id, ...itemData } = item;
-                            joyRef.child(id || Date.now() + Math.random()).set(itemData);
-                        });
+                        if (json.joyItems) {
+                            json.joyItems.forEach(item => {
+                                const { id, ...itemData } = item;
+                                joyRef.child(id || Date.now() + Math.random()).set(itemData);
+                            });
+                        }
                     });
                     sharedRef.remove().then(() => {
-                        json.sharedItems?.forEach(item => {
-                            const { id, ...itemData } = item;
-                            sharedRef.child(id || Date.now() + Math.random()).set(itemData);
-                        });
+                        if (json.sharedItems) {
+                            json.sharedItems.forEach(item => {
+                                const { id, ...itemData } = item;
+                                sharedRef.child(id || Date.now() + Math.random()).set(itemData);
+                            });
+                        }
                     });
-                    alert("Backup restored to cloud! Changes will sync to all devices.");
+                    alert("✅ Backup restored to cloud! Changes will sync to all devices.");
                 }
             } catch (err) { alert("Invalid backup file"); }
         };
@@ -824,6 +860,7 @@
     
     function renderApp() { updateStats(); renderAddForm(); renderItems(); randomQuote(); }
     
+    // Event Listeners
     document.getElementById("themeToggleBtn")?.addEventListener("click", () => document.body.classList.toggle("dark"));
     document.getElementById("viewToggleBtn")?.addEventListener("click", () => { document.body.classList.toggle("list-mode"); renderItems(); });
     document.querySelectorAll(".tab-btn").forEach(btn => btn.addEventListener("click", () => { currentView = btn.dataset.view; renderApp(); }));
