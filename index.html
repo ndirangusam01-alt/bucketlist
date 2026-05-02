@@ -30,6 +30,72 @@
             background: radial-gradient(circle at 70% 15%, #1f1b24, #0f0c14);
         }
 
+        /* VIEW THEMES: distinct backgrounds based on current category */
+        body.view-sam {
+            background: radial-gradient(circle at 10% 20%, #e6f4ea, #c8e6d9);
+        }
+        body.dark.view-sam {
+            background: radial-gradient(circle at 70% 15%, #1e2a23, #0f1a14);
+        }
+        body.view-joy {
+            background: radial-gradient(circle at 80% 10%, #ffe6f0, #ffd9e8);
+        }
+        body.dark.view-joy {
+            background: radial-gradient(circle at 80% 15%, #2e1f2a, #1a0f18);
+        }
+        body.view-shared {
+            background: radial-gradient(circle at 30% 70%, #fef7e0, #fee2c5);
+        }
+        body.dark.view-shared {
+            background: radial-gradient(circle at 30% 70%, #2a251c, #1a150e);
+        }
+
+        /* animated glow on active tab */
+        .view-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin: 2rem 0 1.8rem;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            background: rgba(255, 245, 235, 0.8);
+            backdrop-filter: blur(8px);
+            border: none;
+            padding: 0.9rem 2.2rem;
+            border-radius: 100px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            color: #734b2e;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+        }
+
+        .tab-btn.active {
+            transform: scale(1.02);
+            box-shadow: 0 12px 20px rgba(0,0,0,0.15);
+            letter-spacing: 0.5px;
+        }
+
+        /* distinct active styles per view */
+        .tab-btn[data-view="sam"].active {
+            background: #2d6a4f;
+            color: white;
+            border-left: 4px solid #a7e0b5;
+        }
+        .tab-btn[data-view="joy"].active {
+            background: #e76f51;
+            color: white;
+            border-right: 4px solid #ffc8a2;
+        }
+        .tab-btn[data-view="shared"].active {
+            background: #d4a373;
+            color: white;
+            border-bottom: 4px solid #fff0c0;
+        }
+
         .app-container {
             max-width: 1440px;
             margin: 0 auto;
@@ -37,6 +103,7 @@
             z-index: 3;
         }
 
+        /* auth & cards same as before, with minor enhancements */
         .auth-overlay {
             position: fixed;
             top: 0;
@@ -51,7 +118,6 @@
             z-index: 1000;
             font-family: 'Playfair Display', serif;
         }
-
         .auth-card {
             background: rgba(255, 250, 245, 0.95);
             backdrop-filter: blur(20px);
@@ -63,289 +129,44 @@
             box-shadow: 0 40px 70px rgba(0, 0, 0, 0.4);
             border: 1px solid rgba(255, 180, 130, 0.5);
         }
-
-        body.dark .auth-card {
-            background: rgba(35, 30, 45, 0.95);
-        }
-
-        .auth-card i {
-            font-size: 3.5rem;
-            color: #e07a5f;
-            animation: gentleBeat 2s infinite;
-        }
-
-        @keyframes gentleBeat {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.07); }
-        }
-
-        .auth-input {
-            width: 100%;
-            padding: 14px 20px;
-            margin: 1rem 0;
-            border-radius: 60px;
-            border: 1px solid #ffcfb5;
-            background: rgba(255, 248, 240, 0.9);
-            font-family: 'Inter', sans-serif;
-            font-size: 1rem;
-        }
-
-        .btn-auth {
-            background: linear-gradient(105deg, #e98a64, #c96f48);
-            border: none;
-            padding: 12px 35px;
-            border-radius: 60px;
-            font-weight: 700;
-            color: white;
-            cursor: pointer;
-        }
-
-        .hero {
-            text-align: center;
-            margin-bottom: 2.2rem;
-        }
-
-        .hero h1 {
-            font-family: 'Playfair Display', serif;
-            font-weight: 800;
-            font-size: 2.4rem;
-            background: linear-gradient(125deg, #2d6a4f, #e76f51, #d4a373);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-
-        .view-tabs {
-            display: flex;
-            justify-content: center;
-            gap: 1.5rem;
-            margin: 2rem 0 1.8rem;
-            flex-wrap: wrap;
-        }
-
-        .tab-btn {
-            background: rgba(255, 245, 235, 0.7);
-            backdrop-filter: blur(8px);
-            border: none;
-            padding: 0.8rem 2rem;
-            border-radius: 100px;
-            font-weight: 700;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: all 0.2s;
-            color: #734b2e;
-        }
-
-        .tab-btn.active { background: #2d6a4f; color: white; }
-        .tab-btn.joy-active { background: #e76f51; color: white; }
-        .tab-btn.shared-active { background: #d4a373; color: white; }
-
-        .summary-stats {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 1rem;
-            margin-bottom: 2rem;
-            background: rgba(255, 250, 245, 0.92);
-            backdrop-filter: blur(10px);
-            border-radius: 100px;
-            padding: 0.8rem 1.8rem;
-        }
-
-        body.dark .summary-stats {
-            background: rgba(35, 30, 45, 0.93);
-        }
-
-        .stat-card {
-            text-align: center;
-            font-weight: 600;
-            padding: 5px 16px;
-            border-radius: 40px;
-            background: rgba(255, 220, 190, 0.3);
-        }
-
-        .toolbar {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            align-items: center;
-            gap: 14px;
-            background: rgba(255, 250, 245, 0.92);
-            backdrop-filter: blur(12px);
-            padding: 0.8rem 1.8rem;
-            border-radius: 100px;
-            margin-bottom: 2rem;
-        }
-
-        body.dark .toolbar {
-            background: rgba(35, 30, 45, 0.93);
-        }
-
-        .search-filter input, .search-filter select {
-            padding: 10px 18px;
-            border-radius: 50px;
-            border: 1px solid #ffcfb5;
-            background: rgba(255, 245, 235, 0.7);
-        }
-
-        .icon-btn {
-            background: rgba(200, 150, 120, 0.15);
-            border: none;
-            padding: 8px 18px;
-            border-radius: 40px;
-            color: #b95f3c;
-            font-weight: 500;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-
-        .icon-btn:hover {
-            background: rgba(217, 137, 95, 0.3);
-            transform: translateY(-2px);
-        }
-
-        .cards-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
-            gap: 2rem;
-        }
-
-        .cards-grid.list-view {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .bucket-item {
-            background: rgba(255, 250, 245, 0.92);
-            backdrop-filter: blur(12px);
-            border-radius: 2rem;
-            padding: 1.6rem;
-            border: 1px solid rgba(217, 137, 95, 0.4);
-            transition: all 0.25s ease;
-            box-shadow: 0 30px 45px -20px rgba(80, 40, 20, 0.25);
-        }
-
-        body.dark .bucket-item {
-            background: rgba(35, 30, 45, 0.93);
-        }
-
-        .bucket-item:hover {
-            transform: translateY(-6px);
-        }
-
-        .bucket-item.completed {
-            border-left: 6px solid #2d6a4f;
-        }
-
-        .item-title {
-            font-size: 1.35rem;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            flex-wrap: wrap;
-        }
-
-        .strike {
-            text-decoration: line-through;
-            opacity: 0.7;
-        }
-
-        .tag {
-            background: #f3e1d4;
-            padding: 4px 14px;
-            border-radius: 60px;
-            font-size: 0.7rem;
-            font-weight: 700;
-        }
-
-        .real-time-badge {
-            font-size: 0.7rem;
-            background: rgba(217, 137, 95, 0.2);
-            border-radius: 20px;
-            padding: 2px 8px;
-            margin-left: 8px;
-        }
-
-        .btn-primary {
-            background: linear-gradient(105deg, #e2855f, #c2633a);
-            border: none;
-            padding: 10px 24px;
-            border-radius: 60px;
-            color: white;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        .voice-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.75);
-            backdrop-filter: blur(20px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 2000;
-        }
-
-        .voice-modal-content {
-            background: linear-gradient(145deg, rgba(255, 245, 240, 0.98), rgba(255, 235, 225, 0.98));
-            border-radius: 2.5rem;
-            padding: 2rem 1.8rem;
-            max-width: 420px;
-            width: 90%;
-            text-align: center;
-        }
-
-        body.dark .voice-modal-content {
-            background: linear-gradient(145deg, #2a2535, #1f1b2a);
-        }
-
-        .voice-timer {
-            font-size: 3.2rem;
-            font-weight: 800;
-            font-family: monospace;
-            margin: 0.8rem 0;
-        }
-
-        .voice-wave {
-            display: flex;
-            justify-content: center;
-            gap: 7px;
-            height: 70px;
-            margin: 0.8rem 0;
-        }
-
-        .voice-wave span {
-            width: 6px;
-            height: 22px;
-            background: #d98b5b;
-            border-radius: 20px;
-        }
-
-        .recording-active .voice-wave span {
-            animation: waveRomance 0.55s infinite ease alternate;
-        }
-
-        @keyframes waveRomance {
-            0% { height: 18px; }
-            100% { height: 52px; }
-        }
-
-        footer {
-            text-align: center;
-            margin-top: 2rem;
-            font-size: 0.7rem;
-            opacity: 0.7;
-        }
-
-        @keyframes gentlePop {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(0.98); }
-        }
+        body.dark .auth-card { background: rgba(35, 30, 45, 0.95); }
+        .auth-card i { font-size: 3.5rem; color: #e07a5f; animation: gentleBeat 2s infinite; }
+        @keyframes gentleBeat { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.07); } }
+        .auth-input { width: 100%; padding: 14px 20px; margin: 1rem 0; border-radius: 60px; border: 1px solid #ffcfb5; background: rgba(255, 248, 240, 0.9); font-family: 'Inter', sans-serif; font-size: 1rem; }
+        .btn-auth { background: linear-gradient(105deg, #e98a64, #c96f48); border: none; padding: 12px 35px; border-radius: 60px; font-weight: 700; color: white; cursor: pointer; }
+        .hero { text-align: center; margin-bottom: 2.2rem; }
+        .hero h1 { font-family: 'Playfair Display', serif; font-weight: 800; font-size: 2.4rem; background: linear-gradient(125deg, #2d6a4f, #e76f51, #d4a373); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .summary-stats { display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem; margin-bottom: 2rem; background: rgba(255, 250, 245, 0.92); backdrop-filter: blur(10px); border-radius: 100px; padding: 0.8rem 1.8rem; }
+        body.dark .summary-stats { background: rgba(35, 30, 45, 0.93); }
+        .stat-card { text-align: center; font-weight: 600; padding: 5px 16px; border-radius: 40px; background: rgba(255, 220, 190, 0.3); }
+        .toolbar { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 14px; background: rgba(255, 250, 245, 0.92); backdrop-filter: blur(12px); padding: 0.8rem 1.8rem; border-radius: 100px; margin-bottom: 2rem; }
+        body.dark .toolbar { background: rgba(35, 30, 45, 0.93); }
+        .search-filter input, .search-filter select { padding: 10px 18px; border-radius: 50px; border: 1px solid #ffcfb5; background: rgba(255, 245, 235, 0.7); }
+        .icon-btn { background: rgba(200, 150, 120, 0.15); border: none; padding: 8px 18px; border-radius: 40px; color: #b95f3c; font-weight: 500; cursor: pointer; transition: 0.2s; }
+        .icon-btn:hover { background: rgba(217, 137, 95, 0.3); transform: translateY(-2px); }
+        .cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 2rem; }
+        .cards-grid.list-view { display: flex; flex-direction: column; }
+        .bucket-item { background: rgba(255, 250, 245, 0.92); backdrop-filter: blur(12px); border-radius: 2rem; padding: 1.6rem; border: 1px solid rgba(217, 137, 95, 0.4); transition: all 0.25s ease; box-shadow: 0 30px 45px -20px rgba(80, 40, 20, 0.25); }
+        body.dark .bucket-item { background: rgba(35, 30, 45, 0.93); }
+        .bucket-item:hover { transform: translateY(-6px); }
+        .bucket-item.completed { border-left: 6px solid #2d6a4f; }
+        .item-title { font-size: 1.35rem; font-weight: 700; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+        .strike { text-decoration: line-through; opacity: 0.7; }
+        .tag { background: #f3e1d4; padding: 4px 14px; border-radius: 60px; font-size: 0.7rem; font-weight: 700; }
+        .real-time-badge { font-size: 0.7rem; background: rgba(217, 137, 95, 0.2); border-radius: 20px; padding: 2px 8px; margin-left: 8px; }
+        .btn-primary { background: linear-gradient(105deg, #e2855f, #c2633a); border: none; padding: 10px 24px; border-radius: 60px; color: white; font-weight: bold; cursor: pointer; }
+        .voice-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(20px); display: flex; align-items: center; justify-content: center; z-index: 2000; }
+        .voice-modal-content { background: linear-gradient(145deg, rgba(255, 245, 240, 0.98), rgba(255, 235, 225, 0.98)); border-radius: 2.5rem; padding: 2rem 1.8rem; max-width: 420px; width: 90%; text-align: center; }
+        body.dark .voice-modal-content { background: linear-gradient(145deg, #2a2535, #1f1b2a); }
+        .voice-timer { font-size: 3.2rem; font-weight: 800; font-family: monospace; margin: 0.8rem 0; }
+        .voice-wave { display: flex; justify-content: center; gap: 7px; height: 70px; margin: 0.8rem 0; }
+        .voice-wave span { width: 6px; height: 22px; background: #d98b5b; border-radius: 20px; }
+        .recording-active .voice-wave span { animation: waveRomance 0.55s infinite ease alternate; }
+        @keyframes waveRomance { 0% { height: 18px; } 100% { height: 52px; } }
+        footer { text-align: center; margin-top: 2rem; font-size: 0.7rem; opacity: 0.7; }
+        .permission-badge { background: #e07a5f20; border-radius: 60px; padding: 5px 14px; font-size: 0.8rem; display: inline-block; margin-left: 12px; font-weight: 500; }
+        .add-disabled-msg { background: #ffddcc; color: #b05a3a; border-radius: 60px; padding: 12px 20px; text-align: center; font-weight: 600; margin-bottom: 1rem; }
+        body.dark .add-disabled-msg { background: #322a24; color: #f0bc9a; }
     </style>
 </head>
 <body>
@@ -366,7 +187,7 @@
 <div class="app-container">
     <div class="hero">
         <h1><i class="fas fa-infinity"></i> Sam & Joy · Everlasting</h1>
-        <div class="sub"><i class="fas fa-cloud-upload-alt"></i> ☁️ Cloud-synced · Any device, anytime</div>
+        <div class="sub"><i class="fas fa-cloud-upload-alt"></i> ☁️ Cloud-synced · <span id="currentUserDisplay"></span></div>
         <div style="margin-top: 16px; display: flex; justify-content: center; gap: 12px;">
             <button id="themeToggleBtn" class="icon-btn"><i class="fas fa-moon"></i> Dark Mode</button>
             <button id="viewToggleBtn" class="icon-btn"><i class="fas fa-th-large"></i> Grid/List</button>
@@ -374,8 +195,8 @@
     </div>
 
     <div class="view-tabs">
-        <button class="tab-btn" data-view="sam">🌿 Sam's Garden</button>
-        <button class="tab-btn" data-view="joy">🌸 Joy's Whimsy</button>
+        <button class="tab-btn" data-view="sam">🌿 Sam's World</button>
+        <button class="tab-btn" data-view="joy">🌸 Joy's World</button>
         <button class="tab-btn" data-view="shared">💞 Shared Eternity</button>
     </div>
 
@@ -395,6 +216,7 @@
         </div>
     </div>
 
+    <!-- Dynamic add form area with permission notice -->
     <div id="addFormContainer" style="background: rgba(255, 250, 245, 0.92); backdrop-filter: blur(10px); border-radius: 2rem; padding: 1.8rem; margin-bottom: 2rem;"></div>
     <div id="itemsContainer" class="cards-grid"></div>
     <div id="inspireQuote" style="margin-top: 1.5rem; text-align: center; font-style: italic;"></div>
@@ -403,8 +225,6 @@
 </div>
 
 <script>
-    // ========== YOUR FIREBASE CONFIGURATION ==========
-    // This is YOUR unique Firebase project - data is private and secure
     const firebaseConfig = {
         apiKey: "AIzaSyBaCUlB34vC_WC_YR3nTVUwOnWV4MXqcDI",
         authDomain: "sam-and-joy-bucketlist.firebaseapp.com",
@@ -414,463 +234,162 @@
         messagingSenderId: "816236882392",
         appId: "1:816236882392:web:fccf188e4caaba92906aad"
     };
-    
-    // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
     const database = firebase.database();
-    
-    const CRED = { Sam: "sam2025", Joy: "joy2025" };
+    const CRED = { Sam: "sam01112024", Joy: "joy" };
     let currentUser = null;
     let currentView = "sam";
-    
-    // Data references in Firebase
     let samRef, joyRef, sharedRef;
     let samItems = [], joyItems = [], sharedItems = [];
     let isInitialLoad = true;
-    
-    // Authentication with real-time connection check
+
+    // Helper: check if current user can add to a given listType
+    function canUserAddToList(listType) {
+        if (!currentUser) return false;
+        if (listType === currentUser.toLowerCase()) return true;   // Sam can add to "sam", Joy can add to "joy"
+        if (listType === "shared") return true;                    // Both can add to shared
+        return false;
+    }
+
+    // authentication
     document.getElementById("authBtn")?.addEventListener("click", async () => {
         let name = document.getElementById("authName").value.trim();
         let pass = document.getElementById("authPass").value;
-        
         const statusDiv = document.getElementById("connectionStatus");
         statusDiv.innerHTML = "⏳ Connecting to cloud database...";
-        
         if ((name === "Sam" && CRED.Sam === pass) || (name === "Joy" && CRED.Joy === pass)) {
             currentUser = name;
-            
-            // Set up Firebase references
             samRef = database.ref('bucketlist/sam');
             joyRef = database.ref('bucketlist/joy');
             sharedRef = database.ref('bucketlist/shared');
-            
-            // Check connection
             const connectedRef = database.ref('.info/connected');
             connectedRef.on('value', (snap) => {
                 if (snap.val() === true) {
                     statusDiv.innerHTML = "✅ Connected to cloud! Loading your shared memories...";
-                    setTimeout(() => {
-                        if(statusDiv) statusDiv.style.opacity = "0";
-                        setTimeout(() => {
-                            if(statusDiv) statusDiv.style.display = "none";
-                        }, 1000);
-                    }, 1500);
-                } else {
-                    statusDiv.innerHTML = "⚠️ Connecting to network...";
-                }
+                    setTimeout(() => { if(statusDiv) statusDiv.style.opacity = "0"; setTimeout(() => { if(statusDiv) statusDiv.style.display = "none"; }, 1000); }, 1500);
+                } else statusDiv.innerHTML = "⚠️ Connecting to network...";
             });
-            
-            // Set up real-time listeners for ALL three lists (shared across users)
             setupRealtimeSync();
-            
             document.getElementById("authScreen").style.display = "none";
             document.getElementById("mainApp").style.display = "block";
-            
+            document.getElementById("currentUserDisplay").innerHTML = `<i class="fas fa-user-check"></i> Logged as ${currentUser} 🩷`;
+            applyViewTheme(currentView);
         } else {
             document.getElementById("authError").innerText = "Only Sam or Joy can enter this heart.";
             statusDiv.innerHTML = "🔐 Authentication failed";
         }
     });
-    
+
     function setupRealtimeSync() {
-        // Listen to Sam's list - BOTH users see the same data instantly
-        samRef.on('value', (snapshot) => {
-            const data = snapshot.val();
-            if (data) {
-                samItems = Object.entries(data).map(([id, item]) => ({ ...item, id }));
-            } else {
-                samItems = [];
-            }
-            if (!isInitialLoad) {
-                renderApp();
-                showSyncNotification();
-            }
-            updateStats();
-        });
-        
-        // Listen to Joy's list - BOTH users see the same data instantly
-        joyRef.on('value', (snapshot) => {
-            const data = snapshot.val();
-            if (data) {
-                joyItems = Object.entries(data).map(([id, item]) => ({ ...item, id }));
-            } else {
-                joyItems = [];
-            }
-            if (!isInitialLoad) {
-                renderApp();
-                showSyncNotification();
-            }
-            updateStats();
-        });
-        
-        // Listen to Shared list - BOTH users see the same data instantly
-        sharedRef.on('value', (snapshot) => {
-            const data = snapshot.val();
-            if (data) {
-                sharedItems = Object.entries(data).map(([id, item]) => ({ ...item, id }));
-            } else {
-                sharedItems = [];
-            }
-            if (!isInitialLoad) {
-                renderApp();
-                showSyncNotification();
-            }
-            updateStats();
-        });
-        
+        samRef.on('value', (snapshot) => { const data = snapshot.val(); samItems = data ? Object.entries(data).map(([id, item]) => ({ ...item, id })) : []; if (!isInitialLoad) { renderApp(); showSyncNotification(); } updateStats(); });
+        joyRef.on('value', (snapshot) => { const data = snapshot.val(); joyItems = data ? Object.entries(data).map(([id, item]) => ({ ...item, id })) : []; if (!isInitialLoad) { renderApp(); showSyncNotification(); } updateStats(); });
+        sharedRef.on('value', (snapshot) => { const data = snapshot.val(); sharedItems = data ? Object.entries(data).map(([id, item]) => ({ ...item, id })) : []; if (!isInitialLoad) { renderApp(); showSyncNotification(); } updateStats(); });
         isInitialLoad = false;
         renderApp();
     }
-    
-    function showSyncNotification() {
-        const syncBadge = document.getElementById('syncStatus');
-        if (syncBadge) {
-            syncBadge.innerHTML = '🔄 real-time update received';
-            setTimeout(() => { 
-                if(syncBadge) syncBadge.innerHTML = '✨ live across all devices'; 
-            }, 2000);
-        }
-    }
-    
+
+    function showSyncNotification() { const syncBadge = document.getElementById('syncStatus'); if (syncBadge) { syncBadge.innerHTML = '🔄 real-time update received'; setTimeout(() => { if(syncBadge) syncBadge.innerHTML = '✨ cloud live ✨'; }, 2000); } }
+
     function addItemToList(listType, title, desc, category, imageDataUrl = null, audioDataUrl = null) {
+        if (!canUserAddToList(listType)) { alert(`✨ Only ${listType === 'sam' ? 'Sam' : listType === 'joy' ? 'Joy' : 'shared'} permissions: You can't add to ${listType.toUpperCase()} list. But you can add to Shared Eternity or your own world.`); return false; }
         if (!title.trim()) { alert("✨ Every dream deserves a poetic title ✨"); return false; }
-        
-        const newItem = {
-            title: title.trim(),
-            description: desc || "",
-            category: category || "adventure",
-            imageDataUrl: imageDataUrl || null,
-            audioUrl: audioDataUrl || null,
-            completed: false,
-            completedAt: null,
-            createdAt: new Date().toISOString(),
-            createdBy: currentUser
-        };
-        
+        const newItem = { title: title.trim(), description: desc || "", category: category || "adventure", imageDataUrl: imageDataUrl || null, audioUrl: audioDataUrl || null, completed: false, completedAt: null, createdAt: new Date().toISOString(), createdBy: currentUser };
         const newId = Date.now() + "-" + Math.random().toString(36).substr(2, 8);
-        
-        let ref;
+        let ref = null;
         if (listType === 'sam') ref = samRef.child(newId);
         else if (listType === 'joy') ref = joyRef.child(newId);
         else ref = sharedRef.child(newId);
-        
-        ref.set(newItem).then(() => {
-            if (listType === currentView) showCelebration();
-        }).catch(err => alert("Error saving: " + err.message));
-        
+        if (ref) ref.set(newItem).then(() => { if (listType === currentView) showCelebration(); }).catch(err => alert("Error saving: " + err.message));
         return true;
     }
-    
-    function toggleComplete(listType, id) {
-        let ref;
-        if (listType === 'sam') ref = samRef.child(id);
-        else if (listType === 'joy') ref = joyRef.child(id);
-        else ref = sharedRef.child(id);
-        
-        ref.once('value').then((snapshot) => {
-            const item = snapshot.val();
-            if (item) {
-                const updates = {
-                    completed: !item.completed,
-                    completedAt: !item.completed ? new Date().toISOString() : null
-                };
-                ref.update(updates);
-                if (!item.completed) showCelebration();
-            }
-        });
+
+    function toggleComplete(listType, id) { let ref; if (listType === 'sam') ref = samRef.child(id); else if (listType === 'joy') ref = joyRef.child(id); else ref = sharedRef.child(id); ref.once('value').then((snapshot) => { const item = snapshot.val(); if (item) { ref.update({ completed: !item.completed, completedAt: !item.completed ? new Date().toISOString() : null }); if (!item.completed) showCelebration(); } }); }
+    function deleteItem(listType, id) { if (confirm("Delete this memory forever? 💔")) { let ref; if (listType === 'sam') ref = samRef.child(id); else if (listType === 'joy') ref = joyRef.child(id); else ref = sharedRef.child(id); ref.remove(); } }
+    function editItem(listType, id) { 
+        if ((listType === 'joy' && currentUser !== 'Joy') || (listType === 'sam' && currentUser !== 'Sam')) { alert(`You can only edit items in your own world or shared list.`); return; }
+        let ref; if (listType === 'sam') ref = samRef.child(id); else if (listType === 'joy') ref = joyRef.child(id); else ref = sharedRef.child(id);
+        ref.once('value').then((snapshot) => { const item = snapshot.val(); if (item) { let newTitle = prompt("Revise your dream title", item.title); if (newTitle && newTitle.trim()) item.title = newTitle.trim(); let newDesc = prompt("Rewrite the memory", item.description || ""); if (newDesc !== null) item.description = newDesc; let newCat = prompt("Category (adventure/romance/growth)", item.category); if (newCat && ["adventure","romance","growth"].includes(newCat.toLowerCase())) item.category = newCat.toLowerCase(); ref.update({ title: item.title, description: item.description, category: item.category }); } });
     }
-    
-    function deleteItem(listType, id) {
-        if (confirm("Delete this memory forever? 💔")) {
-            let ref;
-            if (listType === 'sam') ref = samRef.child(id);
-            else if (listType === 'joy') ref = joyRef.child(id);
-            else ref = sharedRef.child(id);
-            ref.remove();
-        }
-    }
-    
-    function editItem(listType, id) {
-        let ref;
-        if (listType === 'sam') ref = samRef.child(id);
-        else if (listType === 'joy') ref = joyRef.child(id);
-        else ref = sharedRef.child(id);
-        
-        ref.once('value').then((snapshot) => {
-            const item = snapshot.val();
-            if (item) {
-                let newTitle = prompt("Revise your dream title", item.title);
-                if (newTitle && newTitle.trim()) item.title = newTitle.trim();
-                let newDesc = prompt("Rewrite the memory", item.description || "");
-                if (newDesc !== null) item.description = newDesc;
-                let newCat = prompt("Category (adventure/romance/growth)", item.category);
-                if (newCat && ["adventure","romance","growth"].includes(newCat.toLowerCase())) item.category = newCat.toLowerCase();
-                ref.update({ title: item.title, description: item.description, category: item.category });
-            }
-        });
-    }
-    
-    function showCelebration() {
-        let cont = document.getElementById("itemsContainer");
-        if (cont) cont.style.animation = "none";
-        setTimeout(() => { if (cont) cont.style.animation = "gentlePop 0.4s ease"; }, 10);
-    }
-    
+    function showCelebration() { let cont = document.getElementById("itemsContainer"); if (cont) cont.style.animation = "none"; setTimeout(() => { if (cont) cont.style.animation = "gentlePop 0.4s ease"; }, 10); }
+
     function openVoiceRecorder(callback) {
-        const modal = document.createElement('div');
-        modal.className = 'voice-modal';
-        modal.innerHTML = `
-            <div class="voice-modal-content">
-                <i class="fas fa-microphone-alt"></i>
-                <h3>❤️ voice whisper ❤️</h3>
-                <div class="voice-timer" id="voiceTimerDisplay">00:00</div>
-                <div class="voice-wave" id="voiceWave"><span></span><span></span><span></span><span></span><span></span><span></span></div>
-                <div class="voice-buttons">
-                    <button id="voiceStartBtn" class="voice-btn-record"><i class="fas fa-circle"></i> Start Recording</button>
-                    <button id="voiceStopBtn" class="voice-btn-stop" disabled><i class="fas fa-stop"></i> Stop & Save</button>
-                    <button id="voiceCancelBtn" class="voice-btn-cancel"><i class="fas fa-times"></i> Cancel</button>
-                </div>
-            </div>
-        `;
-        document.body.appendChild(modal);
-        
-        // Add missing styles dynamically
-        const style = document.createElement('style');
-        style.textContent = `
-            .voice-btn-record, .voice-btn-stop, .voice-btn-cancel {
-                padding: 10px 24px; border-radius: 60px; font-weight: 700; border: none; cursor: pointer;
-            }
-            .voice-btn-record { background: linear-gradient(110deg, #e76f51, #d65c38); color: white; }
-            .voice-btn-stop { background: #4a4a5e; color: white; }
-            .voice-btn-cancel { background: transparent; border: 1px solid rgba(129, 83, 60, 0.4); }
-        `;
-        document.head.appendChild(style);
-        
-        const timerDisplay = document.getElementById('voiceTimerDisplay');
-        const startBtn = document.getElementById('voiceStartBtn');
-        const stopBtn = document.getElementById('voiceStopBtn');
-        const cancelBtn = document.getElementById('voiceCancelBtn');
-        
+        const modal = document.createElement('div'); modal.className = 'voice-modal';
+        modal.innerHTML = `<div class="voice-modal-content"><i class="fas fa-microphone-alt"></i><h3>❤️ voice whisper ❤️</h3><div class="voice-timer" id="voiceTimerDisplay">00:00</div><div class="voice-wave" id="voiceWave"><span></span><span></span><span></span><span></span><span></span><span></span></div><div class="voice-buttons"><button id="voiceStartBtn" class="voice-btn-record"><i class="fas fa-circle"></i> Start Recording</button><button id="voiceStopBtn" class="voice-btn-stop" disabled><i class="fas fa-stop"></i> Stop & Save</button><button id="voiceCancelBtn" class="voice-btn-cancel"><i class="fas fa-times"></i> Cancel</button></div></div>`;
+        document.body.appendChild(modal); const style = document.createElement('style'); style.textContent = `.voice-btn-record, .voice-btn-stop, .voice-btn-cancel { padding: 10px 24px; border-radius: 60px; font-weight: 700; border: none; cursor: pointer; } .voice-btn-record { background: linear-gradient(110deg, #e76f51, #d65c38); color: white; } .voice-btn-stop { background: #4a4a5e; color: white; } .voice-btn-cancel { background: transparent; border: 1px solid rgba(129, 83, 60, 0.4); }`; document.head.appendChild(style);
+        const timerDisplay = document.getElementById('voiceTimerDisplay'); const startBtn = document.getElementById('voiceStartBtn'); const stopBtn = document.getElementById('voiceStopBtn'); const cancelBtn = document.getElementById('voiceCancelBtn');
         let seconds = 0, timerInterval = null, mediaStream = null, mediaRecorder = null, audioChunks = [];
-        
-        function updateTimerDisplay() {
-            const mins = Math.floor(seconds / 60);
-            const secs = seconds % 60;
-            timerDisplay.textContent = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-        }
-        
-        function startRecording() {
-            navigator.mediaDevices.getUserMedia({ audio: true })
-                .then(stream => {
-                    mediaStream = stream;
-                    mediaRecorder = new MediaRecorder(stream);
-                    audioChunks = [];
-                    mediaRecorder.ondataavailable = (event) => { if (event.data.size > 0) audioChunks.push(event.data); };
-                    mediaRecorder.onstop = () => {
-                        if (timerInterval) clearInterval(timerInterval);
-                        const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
-                        const reader = new FileReader();
-                        reader.onload = function () {
-                            modal.remove();
-                            if (callback) callback(reader.result);
-                        };
-                        reader.readAsDataURL(audioBlob);
-                        if (mediaStream) mediaStream.getTracks().forEach(track => track.stop());
-                    };
-                    mediaRecorder.start();
-                    seconds = 0;
-                    updateTimerDisplay();
-                    timerInterval = setInterval(() => { seconds++; updateTimerDisplay(); }, 1000);
-                    startBtn.disabled = true;
-                    stopBtn.disabled = false;
-                    modal.querySelector('.voice-modal-content')?.classList.add('recording-active');
-                })
-                .catch(() => { alert("🎙️ Please allow microphone access"); modal.remove(); });
-        }
-        
-        startBtn.onclick = startRecording;
-        stopBtn.onclick = () => { if (mediaRecorder?.state === "recording") mediaRecorder.stop(); };
-        cancelBtn.onclick = () => { if (mediaRecorder?.state === "recording") mediaRecorder.stop(); if (mediaStream) mediaStream.getTracks().forEach(t => t.stop()); modal.remove(); };
+        function updateTimerDisplay() { const mins = Math.floor(seconds / 60); const secs = seconds % 60; timerDisplay.textContent = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`; }
+        function startRecording() { navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => { mediaStream = stream; mediaRecorder = new MediaRecorder(stream); audioChunks = []; mediaRecorder.ondataavailable = (event) => { if (event.data.size > 0) audioChunks.push(event.data); }; mediaRecorder.onstop = () => { if (timerInterval) clearInterval(timerInterval); const audioBlob = new Blob(audioChunks, { type: 'audio/webm' }); const reader = new FileReader(); reader.onload = function () { modal.remove(); if (callback) callback(reader.result); }; reader.readAsDataURL(audioBlob); if (mediaStream) mediaStream.getTracks().forEach(track => track.stop()); }; mediaRecorder.start(); seconds = 0; updateTimerDisplay(); timerInterval = setInterval(() => { seconds++; updateTimerDisplay(); }, 1000); startBtn.disabled = true; stopBtn.disabled = false; modal.querySelector('.voice-modal-content')?.classList.add('recording-active'); }).catch(() => { alert("🎙️ Please allow microphone access"); modal.remove(); }); }
+        startBtn.onclick = startRecording; stopBtn.onclick = () => { if (mediaRecorder?.state === "recording") mediaRecorder.stop(); }; cancelBtn.onclick = () => { if (mediaRecorder?.state === "recording") mediaRecorder.stop(); if (mediaStream) mediaStream.getTracks().forEach(t => t.stop()); modal.remove(); };
     }
-    
+
     function renderAddForm() {
-        const container = document.getElementById("addFormContainer");
-        if (!container) return;
-        
-        container.innerHTML = `<div style="display:flex; flex-direction:column; gap:14px;">
+        const container = document.getElementById("addFormContainer"); if (!container) return;
+        const canAddToCurrent = canUserAddToList(currentView);
+        const warningMsg = (!canAddToCurrent && (currentView === 'sam' || currentView === 'joy')) ? `<div class="add-disabled-msg"><i class="fas fa-lock"></i> You are logged as ${currentUser}. You can only add dreams to your own world (${currentUser.toLowerCase()}) or the Shared Eternity. Switch to your personal list or Shared to contribute.</div>` : '';
+        container.innerHTML = warningMsg + `<div style="display:flex; flex-direction:column; gap:14px;">
             <div style="display:flex; flex-wrap:wrap; gap:12px;">
-                <input type="text" id="newTitle" placeholder="✨ dream title..." style="flex:2; padding:12px 20px; border-radius:60px; border:1px solid #ffcfb5; background:rgba(255,248,240,0.9);">
-                <input type="text" id="newDesc" placeholder="add a memory note..." style="flex:3; padding:12px 20px; border-radius:60px; border:1px solid #ffcfb5; background:rgba(255,248,240,0.9);">
-                <select id="newCat" style="padding:10px; border-radius:60px; border:1px solid #ffcfb5; background:rgba(255,248,240,0.9);">
+                <input type="text" id="newTitle" placeholder="✨ dream title..." style="flex:2; padding:12px 20px; border-radius:60px; border:1px solid #ffcfb5; background:rgba(255,248,240,0.9);" ${!canAddToCurrent ? 'disabled' : ''}>
+                <input type="text" id="newDesc" placeholder="add a memory note..." style="flex:3; padding:12px 20px; border-radius:60px; border:1px solid #ffcfb5; background:rgba(255,248,240,0.9);" ${!canAddToCurrent ? 'disabled' : ''}>
+                <select id="newCat" style="padding:10px; border-radius:60px; border:1px solid #ffcfb5; background:rgba(255,248,240,0.9);" ${!canAddToCurrent ? 'disabled' : ''}>
                     <option value="adventure">🌄 Adventure</option><option value="romance">💖 Romance</option><option value="growth">🌱 Growth</option>
                 </select>
             </div>
             <div style="display:flex; gap:12px; flex-wrap:wrap;">
-                <label class="icon-btn" for="imageUpload" style="cursor:pointer;"><i class="fas fa-camera"></i> 📸 attach image</label>
-                <input type="file" id="imageUpload" accept="image/*" style="display:none">
-                <button id="voiceRecorderBtn" class="icon-btn"><i class="fas fa-microphone"></i> 🎙️ voice note</button>
-                <button id="addBtnMain" class="btn-primary"><i class="fas fa-heart"></i> plant this dream</button>
+                <label class="icon-btn" for="imageUpload" style="cursor:pointer; ${!canAddToCurrent ? 'opacity:0.5; pointer-events:none;' : ''}"><i class="fas fa-camera"></i> 📸 attach image</label>
+                <input type="file" id="imageUpload" accept="image/*" style="display:none" ${!canAddToCurrent ? 'disabled' : ''}>
+                <button id="voiceRecorderBtn" class="icon-btn" ${!canAddToCurrent ? 'disabled style="opacity:0.5;"' : ''}><i class="fas fa-microphone"></i> 🎙️ voice note</button>
+                <button id="addBtnMain" class="btn-primary" ${!canAddToCurrent ? 'disabled style="opacity:0.5;"' : ''}><i class="fas fa-heart"></i> plant this dream</button>
             </div>
             <div id="mediaPreview" style="display:flex; gap:12px; flex-wrap:wrap;"></div>
         </div>`;
-        
-        let pendingImage = null, pendingAudio = null;
-        const previewDiv = document.getElementById("mediaPreview");
-        function updatePreview() {
-            if (!previewDiv) return;
-            previewDiv.innerHTML = '';
-            if (pendingImage) previewDiv.innerHTML += `<div class="media-preview"><i class="fas fa-image"></i> photo selected <button id="clearImageBtn" style="background:none; border:none; color:#e07a5f; cursor:pointer;">✖</button></div>`;
-            if (pendingAudio) previewDiv.innerHTML += `<div class="media-preview"><i class="fas fa-headphones"></i> voice recorded <button id="clearAudioBtn" style="background:none; border:none; color:#e07a5f; cursor:pointer;">✖</button></div>`;
-            document.getElementById("clearImageBtn")?.addEventListener("click", () => { pendingImage = null; updatePreview(); });
-            document.getElementById("clearAudioBtn")?.addEventListener("click", () => { pendingAudio = null; updatePreview(); });
-        }
-        
-        document.getElementById("imageUpload")?.addEventListener("change", (e) => {
-            const file = e.target.files[0];
-            if (file) { const reader = new FileReader(); reader.onload = ev => { pendingImage = ev.target.result; updatePreview(); }; reader.readAsDataURL(file); }
-        });
-        document.getElementById("voiceRecorderBtn")?.addEventListener("click", () => {
-            openVoiceRecorder((audioBase64) => { pendingAudio = audioBase64; updatePreview(); alert("Voice captured — will be part of this dream"); });
-        });
-        document.getElementById("addBtnMain")?.addEventListener("click", () => {
-            const title = document.getElementById("newTitle")?.value || "";
-            const desc = document.getElementById("newDesc")?.value || "";
-            const cat = document.getElementById("newCat")?.value || "adventure";
-            if (addItemToList(currentView, title, desc, cat, pendingImage, pendingAudio)) {
-                const titleInput = document.getElementById("newTitle");
-                const descInput = document.getElementById("newDesc");
-                if (titleInput) titleInput.value = "";
-                if (descInput) descInput.value = "";
-                pendingImage = null; pendingAudio = null; updatePreview();
-                const fileInput = document.getElementById("imageUpload");
-                if (fileInput) fileInput.value = "";
-            }
-        });
+        if (!canAddToCurrent) return;
+        let pendingImage = null, pendingAudio = null; const previewDiv = document.getElementById("mediaPreview");
+        function updatePreview() { if (!previewDiv) return; previewDiv.innerHTML = ''; if (pendingImage) previewDiv.innerHTML += `<div class="media-preview"><i class="fas fa-image"></i> photo selected <button id="clearImageBtn" style="background:none; border:none; color:#e07a5f; cursor:pointer;">✖</button></div>`; if (pendingAudio) previewDiv.innerHTML += `<div class="media-preview"><i class="fas fa-headphones"></i> voice recorded <button id="clearAudioBtn" style="background:none; border:none; color:#e07a5f; cursor:pointer;">✖</button></div>`; document.getElementById("clearImageBtn")?.addEventListener("click", () => { pendingImage = null; updatePreview(); }); document.getElementById("clearAudioBtn")?.addEventListener("click", () => { pendingAudio = null; updatePreview(); }); }
+        document.getElementById("imageUpload")?.addEventListener("change", (e) => { const file = e.target.files[0]; if (file) { const reader = new FileReader(); reader.onload = ev => { pendingImage = ev.target.result; updatePreview(); }; reader.readAsDataURL(file); } });
+        document.getElementById("voiceRecorderBtn")?.addEventListener("click", () => { openVoiceRecorder((audioBase64) => { pendingAudio = audioBase64; updatePreview(); alert("Voice captured — will be part of this dream"); }); });
+        document.getElementById("addBtnMain")?.addEventListener("click", () => { const title = document.getElementById("newTitle")?.value || ""; const desc = document.getElementById("newDesc")?.value || ""; const cat = document.getElementById("newCat")?.value || "adventure"; if (addItemToList(currentView, title, desc, cat, pendingImage, pendingAudio)) { const titleInput = document.getElementById("newTitle"); const descInput = document.getElementById("newDesc"); if (titleInput) titleInput.value = ""; if (descInput) descInput.value = ""; pendingImage = null; pendingAudio = null; updatePreview(); const fileInput = document.getElementById("imageUpload"); if (fileInput) fileInput.value = ""; } });
     }
-    
-    function getCurrentArray() {
-        if (currentView === 'sam') return samItems;
-        if (currentView === 'joy') return joyItems;
-        return sharedItems;
-    }
-    
+
+    function getCurrentArray() { if (currentView === 'sam') return samItems; if (currentView === 'joy') return joyItems; return sharedItems; }
     function escapeHtml(str) { if (!str) return ""; return str.replace(/[&<>]/g, m => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;' }[m])); }
-    
+
+    function applyViewTheme(view) {
+        document.body.classList.remove('view-sam', 'view-joy', 'view-shared');
+        if (view === 'sam') document.body.classList.add('view-sam');
+        else if (view === 'joy') document.body.classList.add('view-joy');
+        else if (view === 'shared') document.body.classList.add('view-shared');
+        document.querySelectorAll(".tab-btn").forEach(btn => btn.classList.remove('active'));
+        document.querySelector(`.tab-btn[data-view="${view}"]`)?.classList.add('active');
+    }
+
     function renderItems() {
-        let arr = getCurrentArray();
-        let search = document.getElementById("searchInput")?.value.toLowerCase() || "";
-        let status = document.getElementById("filterStatus")?.value || "all";
-        let category = document.getElementById("filterCategory")?.value || "all";
-        let filtered = arr.filter(item => {
-            if (search && !item.title.toLowerCase().includes(search) && !(item.description?.toLowerCase().includes(search))) return false;
-            if (status === "completed" && !item.completed) return false;
-            if (status === "pending" && item.completed) return false;
-            if (category !== "all" && item.category !== category) return false;
-            return true;
-        });
-        const container = document.getElementById("itemsContainer");
-        if (!container) return;
-        const isGridView = !document.body.classList.contains("list-mode");
-        container.className = isGridView ? "cards-grid" : "cards-grid list-view";
+        let arr = getCurrentArray(); let search = document.getElementById("searchInput")?.value.toLowerCase() || ""; let status = document.getElementById("filterStatus")?.value || "all"; let category = document.getElementById("filterCategory")?.value || "all";
+        let filtered = arr.filter(item => { if (search && !item.title.toLowerCase().includes(search) && !(item.description?.toLowerCase().includes(search))) return false; if (status === "completed" && !item.completed) return false; if (status === "pending" && item.completed) return false; if (category !== "all" && item.category !== category) return false; return true; });
+        const container = document.getElementById("itemsContainer"); if (!container) return;
+        const isGridView = !document.body.classList.contains("list-mode"); container.className = isGridView ? "cards-grid" : "cards-grid list-view";
         if (filtered.length === 0) { container.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:3rem;">💫 Add your first magical entry 💫</div>`; return; }
-        container.innerHTML = filtered.map(item => `<div class="bucket-item ${item.completed ? 'completed' : ''}">
-            <div class="item-title">${item.completed ? '<i class="fas fa-check-circle" style="color:#2d6a4f;"></i>' : '<i class="far fa-heart" style="color:#e76f51;"></i>'} <span class="${item.completed ? 'strike' : ''}">${escapeHtml(item.title)}</span><span class="tag">${item.category}</span><span class="real-time-badge"><i class="fas fa-user"></i> ${escapeHtml(item.createdBy)}</span></div>
-            ${item.description ? `<div style="margin:10px 0; font-size:0.85rem;">${escapeHtml(item.description)}</div>` : ''}
-            ${item.imageDataUrl ? `<img src="${item.imageDataUrl}" style="max-width:100%; max-height:170px; border-radius:20px; margin:10px 0;">` : ''}
-            ${item.audioUrl ? `<audio controls src="${item.audioUrl}" style="width:100%; margin:8px 0;"></audio>` : ''}
-            <div style="display:flex; justify-content:space-between; margin-top:12px; font-size:0.7rem;"><span><i class="far fa-calendar-alt"></i> ${new Date(item.createdAt).toLocaleDateString()}</span></div>
-            <div style="display:flex; gap:10px; margin-top:14px;">
-                <button class="icon-btn complete-btn" data-id="${item.id}" data-list="${currentView}"><i class="fas ${item.completed ? 'fa-undo-alt' : 'fa-check-double'}"></i> ${item.completed ? 'undo' : 'done'}</button>
-                <button class="icon-btn edit-btn" data-id="${item.id}" data-list="${currentView}"><i class="fas fa-edit"></i> edit</button>
-                <button class="icon-btn delete-btn" data-id="${item.id}" data-list="${currentView}"><i class="fas fa-trash"></i> delete</button>
-            </div>
-        </div>`).join('');
-        
+        container.innerHTML = filtered.map(item => `<div class="bucket-item ${item.completed ? 'completed' : ''}"><div class="item-title">${item.completed ? '<i class="fas fa-check-circle" style="color:#2d6a4f;"></i>' : '<i class="far fa-heart" style="color:#e76f51;"></i>'} <span class="${item.completed ? 'strike' : ''}">${escapeHtml(item.title)}</span><span class="tag">${item.category}</span><span class="real-time-badge"><i class="fas fa-user"></i> ${escapeHtml(item.createdBy)}</span></div>${item.description ? `<div style="margin:10px 0; font-size:0.85rem;">${escapeHtml(item.description)}</div>` : ''}${item.imageDataUrl ? `<img src="${item.imageDataUrl}" style="max-width:100%; max-height:170px; border-radius:20px; margin:10px 0;">` : ''}${item.audioUrl ? `<audio controls src="${item.audioUrl}" style="width:100%; margin:8px 0;"></audio>` : ''}<div style="display:flex; justify-content:space-between; margin-top:12px; font-size:0.7rem;"><span><i class="far fa-calendar-alt"></i> ${new Date(item.createdAt).toLocaleDateString()}</span></div><div style="display:flex; gap:10px; margin-top:14px;"><button class="icon-btn complete-btn" data-id="${item.id}" data-list="${currentView}"><i class="fas ${item.completed ? 'fa-undo-alt' : 'fa-check-double'}"></i> ${item.completed ? 'undo' : 'done'}</button><button class="icon-btn edit-btn" data-id="${item.id}" data-list="${currentView}"><i class="fas fa-edit"></i> edit</button><button class="icon-btn delete-btn" data-id="${item.id}" data-list="${currentView}"><i class="fas fa-trash"></i> delete</button></div></div>`).join('');
         document.querySelectorAll('.complete-btn').forEach(btn => btn.addEventListener('click', () => toggleComplete(btn.dataset.list, btn.dataset.id)));
         document.querySelectorAll('.edit-btn').forEach(btn => btn.addEventListener('click', () => editItem(btn.dataset.list, btn.dataset.id)));
         document.querySelectorAll('.delete-btn').forEach(btn => btn.addEventListener('click', () => deleteItem(btn.dataset.list, btn.dataset.id)));
     }
-    
-    function updateStats() {
-        const totalSam = samItems.length, completedSam = samItems.filter(i=>i.completed).length;
-        const totalJoy = joyItems.length, completedJoy = joyItems.filter(i=>i.completed).length;
-        const totalShared = sharedItems.length, completedShared = sharedItems.filter(i=>i.completed).length;
-        const statsPanel = document.getElementById("statsPanel");
-        if (statsPanel) {
-            statsPanel.innerHTML = `<div class="stat-card"><i class="fas fa-leaf"></i> Sam's Garden ${completedSam}/${totalSam}</div><div class="stat-card"><i class="fas fa-feather-alt"></i> Joy's Whimsy ${completedJoy}/${totalJoy}</div><div class="stat-card"><i class="fas fa-heart"></i> Shared ${completedShared}/${totalShared}</div><div class="stat-card"><i class="fas fa-infinity"></i> total ${totalSam+totalJoy+totalShared}</div>`;
-        }
-    }
-    
-    function randomDreamPicker() {
-        let all = [...samItems, ...joyItems, ...sharedItems];
-        if (all.length === 0) return alert("Add a dream first");
-        let rand = all[Math.floor(Math.random() * all.length)];
-        alert(`✨ Dream of the moment ✨\n"${rand.title}"\n${rand.description || "Let's make it real together."}`);
-    }
-    
+
+    function updateStats() { const totalSam = samItems.length, completedSam = samItems.filter(i=>i.completed).length; const totalJoy = joyItems.length, completedJoy = joyItems.filter(i=>i.completed).length; const totalShared = sharedItems.length, completedShared = sharedItems.filter(i=>i.completed).length; const statsPanel = document.getElementById("statsPanel"); if (statsPanel) { statsPanel.innerHTML = `<div class="stat-card"><i class="fas fa-leaf"></i> Sam's Garden ${completedSam}/${totalSam}</div><div class="stat-card"><i class="fas fa-feather-alt"></i> Joy's Whimsy ${completedJoy}/${totalJoy}</div><div class="stat-card"><i class="fas fa-heart"></i> Shared ${completedShared}/${totalShared}</div><div class="stat-card"><i class="fas fa-infinity"></i> total ${totalSam+totalJoy+totalShared}</div>`; } }
+    function randomDreamPicker() { let all = [...samItems, ...joyItems, ...sharedItems]; if (all.length === 0) return alert("Add a dream first"); let rand = all[Math.floor(Math.random() * all.length)]; alert(`✨ Dream of the moment ✨\n"${rand.title}"\n${rand.description || "Let's make it real together."}`); }
     const quotes = ["Where you are is home.", "Every love story is beautiful, but ours is my favorite.", "Let's wander where the Wi-Fi is weak.", "You are my greatest adventure.", "Together is a wonderful place to be.", "You make my soul smile."];
-    function randomQuote() { 
-        const quoteDiv = document.getElementById("inspireQuote");
-        if (quoteDiv) quoteDiv.innerHTML = `<i class="fas fa-feather-alt"></i> ${quotes[Math.floor(Math.random() * quotes.length)]}`; 
-    }
-    
-    function exportBackup() {
-        const data = { samItems, joyItems, sharedItems, exportedAt: new Date().toISOString() };
-        const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
-        const a = document.createElement('a');
-        a.href = URL.createObjectURL(blob);
-        a.download = `everlasting_backup_${new Date().toISOString().slice(0,19)}.json`;
-        a.click();
-    }
-    
-    function importBackup(file) {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            try {
-                const json = JSON.parse(e.target.result);
-                if (json.samItems) {
-                    samRef.remove().then(() => {
-                        json.samItems.forEach(item => {
-                            const { id, ...itemData } = item;
-                            samRef.child(id || Date.now() + Math.random()).set(itemData);
-                        });
-                    });
-                    joyRef.remove().then(() => {
-                        if (json.joyItems) {
-                            json.joyItems.forEach(item => {
-                                const { id, ...itemData } = item;
-                                joyRef.child(id || Date.now() + Math.random()).set(itemData);
-                            });
-                        }
-                    });
-                    sharedRef.remove().then(() => {
-                        if (json.sharedItems) {
-                            json.sharedItems.forEach(item => {
-                                const { id, ...itemData } = item;
-                                sharedRef.child(id || Date.now() + Math.random()).set(itemData);
-                            });
-                        }
-                    });
-                    alert("✅ Backup restored to cloud! Changes will sync to all devices.");
-                }
-            } catch (err) { alert("Invalid backup file"); }
-        };
-        reader.readAsText(file);
-    }
+    function randomQuote() { const quoteDiv = document.getElementById("inspireQuote"); if (quoteDiv) quoteDiv.innerHTML = `<i class="fas fa-feather-alt"></i> ${quotes[Math.floor(Math.random() * quotes.length)]}`; }
+    function exportBackup() { const data = { samItems, joyItems, sharedItems, exportedAt: new Date().toISOString() }; const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" }); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `everlasting_backup_${new Date().toISOString().slice(0,19)}.json`; a.click(); }
+    function importBackup(file) { const reader = new FileReader(); reader.onload = (e) => { try { const json = JSON.parse(e.target.result); if (json.samItems) { samRef.remove().then(() => { json.samItems.forEach(item => { const { id, ...itemData } = item; samRef.child(id || Date.now() + Math.random()).set(itemData); }); }); joyRef.remove().then(() => { if (json.joyItems) json.joyItems.forEach(item => { const { id, ...itemData } = item; joyRef.child(id || Date.now() + Math.random()).set(itemData); }); }); sharedRef.remove().then(() => { if (json.sharedItems) json.sharedItems.forEach(item => { const { id, ...itemData } = item; sharedRef.child(id || Date.now() + Math.random()).set(itemData); }); }); alert("✅ Backup restored to cloud!"); } } catch (err) { alert("Invalid backup file"); } }; reader.readAsText(file); }
     
     function renderApp() { updateStats(); renderAddForm(); renderItems(); randomQuote(); }
-    
-    // Event Listeners
+    // Event listeners + view theme switching
     document.getElementById("themeToggleBtn")?.addEventListener("click", () => document.body.classList.toggle("dark"));
     document.getElementById("viewToggleBtn")?.addEventListener("click", () => { document.body.classList.toggle("list-mode"); renderItems(); });
-    document.querySelectorAll(".tab-btn").forEach(btn => btn.addEventListener("click", () => { currentView = btn.dataset.view; renderApp(); }));
-    document.getElementById("searchInput")?.addEventListener("input", () => renderItems());
-    document.getElementById("filterStatus")?.addEventListener("change", () => renderItems());
-    document.getElementById("filterCategory")?.addEventListener("change", () => renderItems());
-    document.getElementById("exportBackupBtn")?.addEventListener("click", exportBackup);
-    document.getElementById("importBackupBtn")?.addEventListener("click", () => { let input = document.createElement('input'); input.type = 'file'; input.accept = 'application/json'; input.onchange = e => importBackup(input.files[0]); input.click(); });
-    document.getElementById("randomDreamBtn")?.addEventListener("click", randomDreamPicker);
-    document.getElementById("quoteBtn")?.addEventListener("click", randomQuote);
+    document.querySelectorAll(".tab-btn").forEach(btn => btn.addEventListener("click", () => { currentView = btn.dataset.view; applyViewTheme(currentView); renderApp(); }));
+    document.getElementById("searchInput")?.addEventListener("input", () => renderItems()); document.getElementById("filterStatus")?.addEventListener("change", () => renderItems()); document.getElementById("filterCategory")?.addEventListener("change", () => renderItems());
+    document.getElementById("exportBackupBtn")?.addEventListener("click", exportBackup); document.getElementById("importBackupBtn")?.addEventListener("click", () => { let input = document.createElement('input'); input.type = 'file'; input.accept = 'application/json'; input.onchange = e => importBackup(input.files[0]); input.click(); });
+    document.getElementById("randomDreamBtn")?.addEventListener("click", randomDreamPicker); document.getElementById("quoteBtn")?.addEventListener("click", randomQuote);
 </script>
 </body>
 </html>
