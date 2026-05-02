@@ -403,7 +403,7 @@
         renderApp();
     }
 
-    function showSyncNotification() { const syncBadge = document.getElementById('syncStatus'); if (syncBadge) { syncBadge.innerHTML = '🔄 real-time update received'; setTimeout(() => { if(syncBadge) syncBadge.innerHTML = '✨ cloud live ✨'; }, 2000); } }
+    function showSyncNotification() { const syncBadge = document.getElementById('syncStatus'); if (syncBadge) { syncBadge.innerHTML = '🔄 real-time update received'; setTimeout(() => { if(syncBadge) syncBadge.innerHTML = '✨✨'; }, 2000); } }
 
     function addItemToList(listType, title, desc, category, imageDataUrl = null, audioDataUrl = null) {
         if (!canUserAddToList(listType)) { alert(`✨ Only ${listType === 'sam' ? 'Sam' : listType === 'joy' ? 'Joy' : 'shared'} permissions: You can't add to ${listType.toUpperCase()} list. But you can add to Shared Eternity or your own world.`); return false; }
@@ -430,7 +430,7 @@
     function renderAddForm() {
         const container = document.getElementById("addFormContainer"); if (!container) return;
         const canAddToCurrent = canUserAddToList(currentView);
-        const warningMsg = (!canAddToCurrent && (currentView === 'sam' || currentView === 'joy')) ? `<div class="add-disabled-msg"><i class="fas fa-lock"></i> You are logged as ${currentUser}. You can only add dreams to your own world (${currentUser.toLowerCase()}) or the Shared Eternity. Switch to your personal list or Shared to contribute.</div>` : '';
+        const warningMsg = (!canAddToCurrent && (currentView === 'sam' || currentView === 'joy')) ? `<div class="add-disabled-msg"><i class="fas fa-lock"></i> You are logged as ${currentUser}. Switch to your personal list or Shared to add.</div>` : '';
         container.innerHTML = warningMsg + `<div style="display:flex; flex-direction:column; gap:14px;">
             <div style="display:flex; flex-wrap:wrap; gap:12px;">
                 <input type="text" id="newTitle" placeholder="✨ dream title..." style="flex:2; padding:12px 20px; border-radius:60px; border:1px solid #ffcfb5; background:rgba(255,248,240,0.9);" ${!canAddToCurrent ? 'disabled' : ''}>
@@ -479,7 +479,7 @@
         document.querySelectorAll('.delete-btn').forEach(btn => btn.addEventListener('click', () => deleteItem(btn.dataset.list, btn.dataset.id)));
     }
 
-    function updateStats() { const totalSam = samItems.length, completedSam = samItems.filter(i=>i.completed).length; const totalJoy = joyItems.length, completedJoy = joyItems.filter(i=>i.completed).length; const totalShared = sharedItems.length, completedShared = sharedItems.filter(i=>i.completed).length; const statsPanel = document.getElementById("statsPanel"); if (statsPanel) { statsPanel.innerHTML = `<div class="stat-card"><i class="fas fa-leaf"></i> Sam's Garden ${completedSam}/${totalSam}</div><div class="stat-card"><i class="fas fa-feather-alt"></i> Joy's Whimsy ${completedJoy}/${totalJoy}</div><div class="stat-card"><i class="fas fa-heart"></i> Shared ${completedShared}/${totalShared}</div><div class="stat-card"><i class="fas fa-infinity"></i> total ${totalSam+totalJoy+totalShared}</div>`; } }
+    function updateStats() { const totalSam = samItems.length, completedSam = samItems.filter(i=>i.completed).length; const totalJoy = joyItems.length, completedJoy = joyItems.filter(i=>i.completed).length; const totalShared = sharedItems.length, completedShared = sharedItems.filter(i=>i.completed).length; const statsPanel = document.getElementById("statsPanel"); if (statsPanel) { statsPanel.innerHTML = `<div class="stat-card"><i class="fas fa-leaf"></i> Sam's ${completedSam}/${totalSam}</div><div class="stat-card"><i class="fas fa-feather-alt"></i> Joy's ${completedJoy}/${totalJoy}</div><div class="stat-card"><i class="fas fa-heart"></i> Shared ${completedShared}/${totalShared}</div><div class="stat-card"><i class="fas fa-infinity"></i> total ${totalSam+totalJoy+totalShared}</div>`; } }
     function randomDreamPicker() { let all = [...samItems, ...joyItems, ...sharedItems]; if (all.length === 0) return alert("Add a dream first"); let rand = all[Math.floor(Math.random() * all.length)]; alert(`✨ Dream of the moment ✨\n"${rand.title}"\n${rand.description || "Let's make it real together."}`); }
     const quotes = ["Where you are is home.", "Every love story is beautiful, but ours is my favorite.", "Let's wander where the Wi-Fi is weak.", "You are my greatest adventure.", "Together is a wonderful place to be.", "You make my soul smile."];
     function randomQuote() { const quoteDiv = document.getElementById("inspireQuote"); if (quoteDiv) quoteDiv.innerHTML = `<i class="fas fa-feather-alt"></i> ${quotes[Math.floor(Math.random() * quotes.length)]}`; }
