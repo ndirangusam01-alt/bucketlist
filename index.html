@@ -6,12 +6,6 @@
     <title>Everlasting Bonds · Sam & Joy — Cloud-Synced Love</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,500;0,700;1,500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <!-- Emoji Picker Library -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/emoji-picker-element@1.18.3/dist/index.css">
-    <script type="module">
-        import Picker from 'https://cdn.jsdelivr.net/npm/emoji-picker-element@1.18.3/dist/index.js';
-        window.EmojiPicker = Picker;
-    </script>
     <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
@@ -32,10 +26,7 @@
             position: relative;
         }
 
-        body.dark {
-            background: radial-gradient(circle at 70% 15%, #1f1b24, #0f0c14);
-        }
-
+        body.dark { background: radial-gradient(circle at 70% 15%, #1f1b24, #0f0c14); }
         body.view-sam { background: radial-gradient(circle at 10% 20%, #e6f4ea, #c8e6d9); }
         body.dark.view-sam { background: radial-gradient(circle at 70% 15%, #1e2a23, #0f1a14); }
         body.view-joy { background: radial-gradient(circle at 80% 10%, #ffe6f0, #ffd9e8); }
@@ -44,7 +35,7 @@
         body.dark.view-shared { background: radial-gradient(circle at 30% 70%, #2a251c, #1a150e); }
 
         .view-tabs { display: flex; justify-content: center; gap: 1.5rem; margin: 2rem 0 1.8rem; flex-wrap: wrap; }
-        .tab-btn { background: rgba(255, 245, 235, 0.8); backdrop-filter: blur(8px); border: none; padding: 0.9rem 2.2rem; border-radius: 100px; font-weight: 700; font-size: 1rem; cursor: pointer; transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1); color: #734b2e; box-shadow: 0 4px 8px rgba(0,0,0,0.05); }
+        .tab-btn { background: rgba(255, 245, 235, 0.8); backdrop-filter: blur(8px); border: none; padding: 0.9rem 2.2rem; border-radius: 100px; font-weight: 700; font-size: 1rem; cursor: pointer; transition: all 0.3s; color: #734b2e; box-shadow: 0 4px 8px rgba(0,0,0,0.05); }
         .tab-btn.active { transform: scale(1.02); box-shadow: 0 12px 20px rgba(0,0,0,0.15); letter-spacing: 0.5px; }
         .tab-btn[data-view="sam"].active { background: #2d6a4f; color: white; border-left: 4px solid #a7e0b5; }
         .tab-btn[data-view="joy"].active { background: #e76f51; color: white; border-right: 4px solid #ffc8a2; }
@@ -102,10 +93,15 @@
         .chat-input-area { display: flex; gap: 8px; align-items: center; position: relative; }
         .chat-input { flex: 1; padding: 8px 12px; border-radius: 60px; border: 1px solid #ffcfb5; background: rgba(255, 248, 240, 0.9); font-size: 0.8rem; }
         .send-chat-btn { background: linear-gradient(105deg, #e2855f, #c2633a); border: none; padding: 6px 14px; border-radius: 60px; color: white; font-size: 0.7rem; cursor: pointer; }
-        .emoji-btn { background: rgba(217, 137, 95, 0.2); border: none; border-radius: 50%; width: 32px; height: 32px; cursor: pointer; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; transition: 0.2s; }
-        .emoji-btn:hover { background: rgba(217, 137, 95, 0.4); transform: scale(1.05); }
-        .input-with-emoji { display: flex; gap: 8px; align-items: center; flex: 1; }
+        .emoji-btn { background: rgba(217, 137, 95, 0.2); border: none; border-radius: 50%; width: 36px; height: 36px; cursor: pointer; font-size: 1.2rem; display: inline-flex; align-items: center; justify-content: center; transition: 0.2s; margin-left: 6px; }
+        .emoji-btn:hover { background: rgba(217, 137, 95, 0.5); transform: scale(1.05); }
+        .input-with-emoji { display: flex; gap: 6px; align-items: center; width: 100%; }
         .input-with-emoji input, .input-with-emoji textarea { flex: 1; }
+        
+        .emoji-panel { position: absolute; bottom: 45px; right: 0; background: white; border-radius: 16px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); padding: 12px; width: 280px; max-height: 300px; overflow-y: auto; z-index: 10000; display: grid; grid-template-columns: repeat(8, 1fr); gap: 6px; border: 1px solid #ffcfb5; }
+        body.dark .emoji-panel { background: #2a2535; border-color: #5a4a3a; }
+        .emoji-option { font-size: 1.4rem; cursor: pointer; padding: 6px; text-align: center; border-radius: 8px; transition: 0.1s; }
+        .emoji-option:hover { background: rgba(217, 137, 95, 0.3); transform: scale(1.1); }
         
         .lightbox { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); backdrop-filter: blur(15px); display: flex; align-items: center; justify-content: center; z-index: 10000; cursor: pointer; }
         .lightbox-content { max-width: 90vw; max-height: 90vh; object-fit: contain; border-radius: 20px; }
@@ -114,8 +110,7 @@
         .clickable-media:hover { transform: scale(1.02); opacity: 0.95; }
         video.clickable-media { max-width: 100%; max-height: 170px; border-radius: 20px; margin: 10px 0; }
         
-        emoji-picker { position: absolute; bottom: 45px; right: 0; z-index: 1000; --emoji-picker-height: 350px; --emoji-picker-width: 280px; }
-        .form-row { display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; }
+        .form-row { display: flex; gap: 12px; margin-bottom: 12px; flex-wrap: wrap; }
     </style>
 </head>
 <body>
@@ -173,6 +168,81 @@
 </div>
 
 <script>
+    // Common emojis list - frequently used ones like WhatsApp
+    const commonEmojis = [
+        "😀", "😃", "😄", "😁", "😅", "😂", "🤣", "😊", "😇", "🙂", "🙃", "😉", "😌", "😍", "🥰", "😘", "😗", "😙", "😚", "😋",
+        "😜", "😝", "😛", "🤑", "🤗", "🤭", "🤫", "🤔", "🤐", "🤨", "😐", "😑", "😶", "😏", "😒", "🙄", "😬", "🤥", "😌", "😔",
+        "😪", "🤤", "😴", "😷", "🤒", "🤕", "🤢", "🤮", "🤧", "🥵", "🥶", "🥴", "😵", "🤯", "🤠", "🥳", "😎", "🤓", "🧐", "😕",
+        "😟", "🙁", "☹️", "😮", "😯", "😲", "😳", "🥺", "😦", "😧", "😨", "😰", "😥", "😢", "😭", "😱", "😖", "😣", "😞", "😓",
+        "😩", "😫", "🥱", "😤", "😡", "😠", "🤬", "😈", "👿", "💀", "☠️", "💩", "🤡", "👹", "👺", "👻", "💀", "🤖", "😺", "😸",
+        "❤️", "🧡", "💛", "💚", "💙", "💜", "🖤", "🤍", "🤎", "💔", "❤️‍🔥", "💕", "💞", "💓", "💗", "💖", "💘", "💝", "💟", "☮️",
+        "✝️", "☪️", "🕉️", "☸️", "✡️", "🔯", "🕎", "☯️", "☦️", "🛐", "⛎", "♈", "♉", "♊", "♋", "♌", "♍", "♎", "♏", "♐",
+        "⭐", "🌟", "✨", "⚡", "🔥", "💧", "💦", "☀️", "🌈", "☁️", "⛅", "❄️", "☃️", "🎄", "🎃", "🎉", "🎊", "🎈", "🎁", "🎀",
+        "🐶", "🐱", "🐭", "🐹", "🐰", "🦊", "🐻", "🐼", "🐨", "🐯", "🦁", "🐮", "🐷", "🐸", "🐵", "🐔", "🐧", "🐦", "🐴", "🐝",
+        "🍎", "🍐", "🍊", "🍋", "🍌", "🍉", "🍇", "🍓", "🫐", "🍒", "🍑", "🥭", "🍍", "🥥", "🥝", "🍅", "🍆", "🥑", "🥦", "🥒",
+        "⚽", "🏀", "🏈", "⚾", "🥎", "🎾", "🏐", "🏉", "🥏", "🎱", "🪀", "🏓", "🏸", "🏒", "🏑", "🥍", "🏏", "🥅", "⛳", "🏹",
+        "🚗", "🚕", "🚙", "🚌", "🚎", "🏎️", "🚓", "🚑", "🚒", "🚐", "🚚", "🚛", "🚜", "🛵", "🏍️", "🚲", "🛴", "🚀", "🛸", "✈️"
+    ];
+
+    function attachEmojiPicker(inputElement) {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'emoji-btn';
+        btn.innerHTML = '😊';
+        btn.title = 'Insert emoji';
+        
+        let panel = null;
+        const parentContainer = inputElement.parentElement;
+        
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            if (panel) {
+                panel.remove();
+                panel = null;
+                return;
+            }
+            panel = document.createElement('div');
+            panel.className = 'emoji-panel';
+            commonEmojis.forEach(emoji => {
+                const emojiSpan = document.createElement('div');
+                emojiSpan.className = 'emoji-option';
+                emojiSpan.textContent = emoji;
+                emojiSpan.addEventListener('click', () => {
+                    const cursorPos = inputElement.selectionStart;
+                    const textBefore = inputElement.value.substring(0, cursorPos);
+                    const textAfter = inputElement.value.substring(cursorPos);
+                    inputElement.value = textBefore + emoji + textAfter;
+                    inputElement.focus();
+                    inputElement.selectionStart = cursorPos + emoji.length;
+                    inputElement.selectionEnd = cursorPos + emoji.length;
+                    inputElement.dispatchEvent(new Event('input', { bubbles: true }));
+                    panel.remove();
+                    panel = null;
+                });
+                panel.appendChild(emojiSpan);
+            });
+            parentContainer.style.position = 'relative';
+            parentContainer.appendChild(panel);
+            
+            const closePanel = (e) => {
+                if (panel && !panel.contains(e.target) && e.target !== btn) {
+                    panel.remove();
+                    panel = null;
+                    document.removeEventListener('click', closePanel);
+                }
+            };
+            setTimeout(() => document.addEventListener('click', closePanel), 100);
+        });
+        
+        const wrapper = document.createElement('div');
+        wrapper.className = 'input-with-emoji';
+        inputElement.parentElement.insertBefore(wrapper, inputElement);
+        wrapper.appendChild(inputElement);
+        wrapper.appendChild(btn);
+        return wrapper;
+    }
+
     const firebaseConfig = {
         apiKey: "AIzaSyBaCUlB34vC_WC_YR3nTVUwOnWV4MXqcDI",
         authDomain: "sam-and-joy-bucketlist.firebaseapp.com",
@@ -196,66 +266,6 @@
         if (listType === currentUser.toLowerCase()) return true;
         if (listType === "shared") return true;
         return false;
-    }
-
-    // Emoji picker helper
-    function attachEmojiPicker(inputElement, positionElement = null) {
-        if (!window.EmojiPicker) return;
-        const btn = document.createElement('button');
-        btn.type = 'button';
-        btn.className = 'emoji-btn';
-        btn.innerHTML = '😊';
-        btn.title = 'Insert emoji';
-        
-        let picker = null;
-        let parentContainer = inputElement.parentElement;
-        
-        btn.addEventListener('click', (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            if (picker) {
-                picker.remove();
-                picker = null;
-                return;
-            }
-            picker = new window.EmojiPicker();
-            picker.addEventListener('emoji-click', (event) => {
-                const emoji = event.detail.unicode;
-                const cursorPos = inputElement.selectionStart;
-                const textBefore = inputElement.value.substring(0, cursorPos);
-                const textAfter = inputElement.value.substring(cursorPos);
-                inputElement.value = textBefore + emoji + textAfter;
-                inputElement.focus();
-                inputElement.selectionStart = cursorPos + emoji.length;
-                inputElement.selectionEnd = cursorPos + emoji.length;
-                picker.remove();
-                picker = null;
-                inputElement.dispatchEvent(new Event('input', { bubbles: true }));
-            });
-            const rect = btn.getBoundingClientRect();
-            picker.style.position = 'absolute';
-            picker.style.bottom = '45px';
-            picker.style.right = '0';
-            picker.style.zIndex = '10000';
-            parentContainer.style.position = 'relative';
-            parentContainer.appendChild(picker);
-            
-            const closePicker = (e) => {
-                if (picker && !picker.contains(e.target) && e.target !== btn) {
-                    picker.remove();
-                    picker = null;
-                    document.removeEventListener('click', closePicker);
-                }
-            };
-            setTimeout(() => document.addEventListener('click', closePicker), 100);
-        });
-        
-        const wrapper = document.createElement('div');
-        wrapper.className = 'input-with-emoji';
-        inputElement.parentElement.insertBefore(wrapper, inputElement);
-        wrapper.appendChild(inputElement);
-        wrapper.appendChild(btn);
-        return wrapper;
     }
 
     function openLightbox(url, type) {
@@ -287,7 +297,6 @@
             timestamp: Date.now(),
             messageId: Date.now() + '-' + Math.random().toString(36).substr(2, 6)
         };
-        
         itemRef.child('chats').once('value').then(snapshot => {
             let chats = snapshot.val() || [];
             chats.push(chatMessage);
@@ -300,7 +309,6 @@
         if (listType === 'sam') itemRef = samRef.child(itemId);
         else if (listType === 'joy') itemRef = joyRef.child(itemId);
         else itemRef = sharedRef.child(itemId);
-        
         itemRef.child('chats').once('value').then(snapshot => {
             let chats = snapshot.val() || [];
             if (messageIndex >= 0 && messageIndex < chats.length) {
@@ -420,7 +428,7 @@
         const container = document.getElementById("addFormContainer"); if (!container) return;
         const canAddToCurrent = canUserAddToList(currentView);
         const warningMsg = (!canAddToCurrent && (currentView === 'sam' || currentView === 'joy')) ? `<div class="add-disabled-msg"><i class="fas fa-lock"></i> You are logged as ${currentUser}. You can only add dreams to your own world (${currentUser.toLowerCase()}) or the Shared Eternity.</div>` : '';
-        container.innerHTML = warningMsg + `<div style="display:flex; flex-direction:column; gap:14px;"><div style="display:flex; flex-wrap:wrap; gap:12px;"><div id="titleWrapper" style="flex:2;"></div><div id="descWrapper" style="flex:3;"></div><select id="newCat" style="padding:10px; border-radius:60px; border:1px solid #ffcfb5; background:rgba(255,248,240,0.9);" ${!canAddToCurrent ? 'disabled' : ''}><option value="adventure">🌄 Adventure</option><option value="romance">💖 Romance</option><option value="growth">🌱 Growth</option></select></div><div style="display:flex; gap:12px; flex-wrap:wrap;"><label class="icon-btn" for="imageUpload" style="cursor:pointer; ${!canAddToCurrent ? 'opacity:0.5; pointer-events:none;' : ''}"><i class="fas fa-camera"></i> 📸 attach image/video</label><input type="file" id="imageUpload" accept="image/*,video/*" style="display:none" ${!canAddToCurrent ? 'disabled' : ''}><button id="voiceRecorderBtn" class="icon-btn" ${!canAddToCurrent ? 'disabled style="opacity:0.5;"' : ''}><i class="fas fa-microphone"></i> 🎙️ voice note <span class="quality-badge">HD audio</span></button><button id="addBtnMain" class="btn-primary" ${!canAddToCurrent ? 'disabled style="opacity:0.5;"' : ''}><i class="fas fa-heart"></i> plant this dream</button></div><div id="mediaPreview" style="display:flex; gap:12px; flex-wrap:wrap;"></div></div>`;
+        container.innerHTML = warningMsg + `<div style="display:flex; flex-direction:column; gap:14px;"><div class="form-row"><div id="titleWrapper" style="flex:2;"></div><div id="descWrapper" style="flex:3;"></div><select id="newCat" style="padding:10px; border-radius:60px; border:1px solid #ffcfb5; background:rgba(255,248,240,0.9);" ${!canAddToCurrent ? 'disabled' : ''}><option value="adventure">🌄 Adventure</option><option value="romance">💖 Romance</option><option value="growth">🌱 Growth</option></select></div><div style="display:flex; gap:12px; flex-wrap:wrap;"><label class="icon-btn" for="imageUpload" style="cursor:pointer; ${!canAddToCurrent ? 'opacity:0.5; pointer-events:none;' : ''}"><i class="fas fa-camera"></i> 📸 attach image/video</label><input type="file" id="imageUpload" accept="image/*,video/*" style="display:none" ${!canAddToCurrent ? 'disabled' : ''}><button id="voiceRecorderBtn" class="icon-btn" ${!canAddToCurrent ? 'disabled style="opacity:0.5;"' : ''}><i class="fas fa-microphone"></i> 🎙️ voice note <span class="quality-badge">HD audio</span></button><button id="addBtnMain" class="btn-primary" ${!canAddToCurrent ? 'disabled style="opacity:0.5;"' : ''}><i class="fas fa-heart"></i> plant this dream</button></div><div id="mediaPreview" style="display:flex; gap:12px; flex-wrap:wrap;"></div></div>`;
         
         if (!canAddToCurrent) return;
         
@@ -491,7 +499,6 @@
             });
         });
         
-        // Attach emoji pickers to chat inputs and send buttons
         filtered.forEach(item => {
             const wrapperDiv = document.getElementById(`chatWrapper-${item.id}`);
             if (wrapperDiv) {
